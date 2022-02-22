@@ -1,3 +1,4 @@
+import 'package:crypto_app_ui/homepage_navbar.dart';
 import 'package:crypto_app_ui/pages/home.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // drawer: Drawer(),
-      home: HomePage(),
+      home: HomePageNavbar(),
       
     );
   }

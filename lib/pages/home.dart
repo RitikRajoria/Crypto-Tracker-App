@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -34,10 +39,10 @@ class HomePage extends StatelessWidget {
             ),
 
             //bottom bar
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: BottomBar(),
-            ),
+            // Align(
+            //   alignment: Alignment.bottomCenter,
+            //   child: BottomBar(),
+            // ),
           ],
         ),
       ),
@@ -337,46 +342,48 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 90),
+          SizedBox(height: 78),
         ],
       ),
     );
   }
 }
 
-class BottomBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 10, right: 10),
-      child: ConvexAppBar(
-        style: TabStyle.fixedCircle,
+// class BottomBar extends StatefulWidget {
+//   @override
+//   State<BottomBar> createState() => _BottomBarState();
+// }
 
-        cornerRadius: 34,
-        height: 70,
-        elevation: 0,
-        top: -20,
-        curveSize: 80,
-        items: [
-          TabItem(
-            icon: Icons.home,
-          ),
-          TabItem(
-            icon: Icons.map,
-          ),
-          TabItem(
-            icon: Icons.add,
-          ),
-          TabItem(
-            icon: Icons.message,
-          ),
-          TabItem(
-            icon: Icons.people,
-          ),
-        ],
-        initialActiveIndex: 2, //optional, default as 0
-        onTap: (int index) {},
-      ),
-    );
-  }
-}
+// class _BottomBarState extends State<BottomBar> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: ConvexAppBar(
+//         style: TabStyle.reactCircle,
+//         height: 70,
+//         elevation: 0,
+//         top: -20,
+//         curveSize: 80,
+//         items: [
+//           TabItem(
+//             icon: Icons.home,
+//           ),
+//           TabItem(
+//             icon: Icons.map,
+//           ),
+//           TabItem(
+//             icon: Icons.add,
+//           ),
+//           TabItem(
+//             icon: Icons.message,
+//           ),
+//           TabItem(
+//             icon: Icons.people,
+//           ),
+//         ],
+//         initialActiveIndex: 2, //optional, default as 0
+//         onTap: (int index) {},
+//       ),
+//     );
+//   }
+// }
