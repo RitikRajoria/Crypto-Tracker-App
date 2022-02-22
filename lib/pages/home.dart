@@ -103,7 +103,7 @@ class HomePage extends StatelessWidget {
               children: [
                 Container(
                   height: (size.width + 30) * 0.50,
-                  width: (size.width - 10) * 0.47,
+                  width: (size.width - 10) * 0.46,
                   decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(49),
@@ -176,7 +176,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Container(
                   height: (size.width + 30) * 0.50,
-                  width: (size.width - 10) * 0.47,
+                  width: (size.width - 10) * 0.46,
                   decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(49),
