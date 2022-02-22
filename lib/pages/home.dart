@@ -265,7 +265,7 @@ class HomePage extends StatelessWidget {
             children: List.generate(
               5,
               (index) => Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
                 child: Container(
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
