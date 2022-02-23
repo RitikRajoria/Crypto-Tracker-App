@@ -1,4 +1,6 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'dart:ui';
+
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:crypto_app_ui/pages/favorites.dart';
 import 'package:crypto_app_ui/pages/home.dart';
 import 'package:crypto_app_ui/pages/search.dart';
@@ -24,6 +26,7 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
     SettingsPage(),
   ];
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -31,7 +34,9 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
           pages[pageIndex],
           Align(
             alignment: Alignment.bottomCenter,
-            child: bottombar(),
+            child: Container(
+              child: bottombar(),
+            ),
           ),
         ],
       ),
@@ -42,35 +47,27 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
 
   Widget bottombar() {
     return Container(
-      child: ConvexAppBar(
-        style: TabStyle.reactCircle,
-        height: 70,
-        elevation: 0,
-        top: -20,
-        curveSize: 80,
-        items: [
-          TabItem(
-            icon: Icons.home,
-          ),
-          TabItem(
-            icon: Icons.map,
-          ),
-          TabItem(
-            icon: Icons.add,
-          ),
-          TabItem(
-            icon: Icons.message,
-          ),
-          TabItem(
-            icon: Icons.people,
-          ),
+      child: CurvedNavigationBar(
+        index: 2,
+        height: 60.0,
+        items: <Widget>[
+          Icon(Icons.add, size: 30),
+          Icon(Icons.list, size: 30),
+          Icon(Icons.compare_arrows, size: 30),
+          Icon(Icons.call_split, size: 30),
+          Icon(Icons.perm_identity, size: 30),
         ],
-        initialActiveIndex: 2, //optional, default as 0
-        onTap: (int index) {
+        color: Colors.white.withOpacity(0.6),
+        buttonBackgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        animationCurve: Curves.easeInOut,
+        animationDuration: Duration(milliseconds: 400),
+        onTap: (index) {
           setState(() {
             pageIndex = index;
           });
         },
+        letIndexChange: (index) => true,
       ),
     );
   }

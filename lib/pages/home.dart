@@ -1,7 +1,9 @@
+import 'package:crypto_app_ui/themes/colors.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -10,23 +12,25 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            //app bar
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.menu, color: Colors.grey, size: 28),
+    
+        return Scaffold(
+          backgroundColor: bgDark,
+          body: SafeArea(
+            child: Stack(
+              children: [
+                //app bar
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.menu, color: textWhite, size: 28),
                     onPressed: () {},
                   ),
                   IconButton(
                     icon:
-                        Icon(Icons.notifications, color: Colors.grey, size: 28),
+                        Icon(Icons.notifications, color: textWhite, size: 28),
                     onPressed: () {},
                   ),
                 ],
@@ -37,12 +41,6 @@ class _HomePageState extends State<HomePage> {
             SingleChildScrollView(
               child: body(size),
             ),
-
-            //bottom bar
-            // Align(
-            //   alignment: Alignment.bottomCenter,
-            //   child: BottomBar(),
-            // ),
           ],
         ),
       ),
@@ -60,17 +58,18 @@ class _HomePageState extends State<HomePage> {
               height: 100,
               width: 100,
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: textWhite,
+                border: Border.all(width: 2, color: Colors.red),
                 shape: BoxShape.circle,
               ),
             ),
           ),
           SizedBox(height: 15),
-          Text("Hey, Welcome back 👋"),
+          Text("Hey, Welcome back 👋" , style: TextStyle(color: textWhite),),
           SizedBox(height: 8),
           Text(
             "User Name",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20,color: textWhite),
           ),
           SizedBox(height: 20),
           //favorites tab
@@ -81,16 +80,17 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   "My Favorite Coins",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: textWhite),
                 ),
                 Row(
                   children: [
-                    Text("See All"),
+                    Text("See All", style: TextStyle(color: textWhite),),
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
                         Icons.arrow_forward_ios,
                         size: 16,
+                        color: textWhite,
                       ),
                     ),
                   ],
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   height: (size.width + 30) * 0.50,
                   width: (size.width - 10) * 0.46,
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.white.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(49),
                   ),
                   child: Column(
@@ -136,7 +136,8 @@ class _HomePageState extends State<HomePage> {
                                   "ETH",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                      fontSize: 18,
+                        color: textWhite,),
                                 ),
                                 Text(
                                   "Ethereum",
@@ -157,7 +158,8 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               "\$373,98",
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                  fontSize: 16, fontWeight: FontWeight.bold,
+                        color: textWhite,),
                             ),
                             SizedBox(height: 3),
                             Row(
@@ -183,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                   height: (size.width + 30) * 0.50,
                   width: (size.width - 10) * 0.46,
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.white.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(49),
                   ),
                   child: Column(
@@ -208,7 +210,8 @@ class _HomePageState extends State<HomePage> {
                                 Text("BNB",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18)),
+                                        fontSize: 18,
+                        color: textWhite,)),
                                 Text("Binance", style: TextStyle(fontSize: 12)),
                               ],
                             ),
@@ -225,7 +228,8 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               "\$373,98",
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                  fontSize: 16, fontWeight: FontWeight.bold,
+                        color: textWhite,),
                             ),
                             SizedBox(height: 3),
                             Row(
@@ -260,9 +264,13 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   "Recommendations",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,
+                        color: textWhite,),
                 ),
-                Text("View All"),
+                Text("View All", style: TextStyle(
+                  
+                        color: textWhite,
+                ),),
               ],
             ),
           ),
@@ -301,7 +309,8 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 "Coin Name",
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                    fontSize: 18, fontWeight: FontWeight.bold,
+                        color: textWhite,),
                               ),
                               Text(
                                 "BNB",
@@ -319,7 +328,8 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             "\$373,98",
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 18, fontWeight: FontWeight.bold,
+                        color: textWhite,),
                           ),
                           SizedBox(height: 3),
                           Row(
@@ -349,41 +359,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// class BottomBar extends StatefulWidget {
-//   @override
-//   State<BottomBar> createState() => _BottomBarState();
-// }
-
-// class _BottomBarState extends State<BottomBar> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: ConvexAppBar(
-//         style: TabStyle.reactCircle,
-//         height: 70,
-//         elevation: 0,
-//         top: -20,
-//         curveSize: 80,
-//         items: [
-//           TabItem(
-//             icon: Icons.home,
-//           ),
-//           TabItem(
-//             icon: Icons.map,
-//           ),
-//           TabItem(
-//             icon: Icons.add,
-//           ),
-//           TabItem(
-//             icon: Icons.message,
-//           ),
-//           TabItem(
-//             icon: Icons.people,
-//           ),
-//         ],
-//         initialActiveIndex: 2, //optional, default as 0
-//         onTap: (int index) {},
-//       ),
-//     );
-//   }
-// }
