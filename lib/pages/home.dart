@@ -19,6 +19,23 @@ class _HomePageState extends State<HomePage> {
             child: Stack(
               children: [
                 //app bar
+                
+                Container(
+                  height: size.height,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    image: DecorationImage(
+                      image: ExactAssetImage("assets/images/back.jpg",),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX:10.0 , sigmaY: 10.0),
+                    child: Container(),
+                  ),
+                  
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                   child: Row(
