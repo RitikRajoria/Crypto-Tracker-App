@@ -57,7 +57,7 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
           Icon(Icons.call_split, size: 30),
           Icon(Icons.perm_identity, size: 30),
         ],
-        color: Colors.white,
+        color: Colors.grey.shade700,
         buttonBackgroundColor: Colors.white,
         backgroundColor: Colors.transparent,
         animationCurve: Curves.easeInOut,
