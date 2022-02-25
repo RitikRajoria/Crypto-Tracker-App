@@ -25,6 +25,7 @@ class _FavoritesState extends State<Favorites> {
           child: Container(),
         ),),
         backgroundColor: Colors.grey.withOpacity(0.2),
+        centerTitle: true,
         title: Text(
           "Favorite Coins",
           style:TextStyle(
@@ -37,10 +38,10 @@ class _FavoritesState extends State<Favorites> {
           CupertinoButton(
                                 padding: EdgeInsets.all(0),
                                 child: viewType == true
-                                    ? Icon(Icons.grid_view,
+                                    ? Icon(Icons.grid_view_rounded,
                                         color: textWhite, size: 20)
-                                    : Icon(Icons.view_list_outlined,
-                                        color: textWhite, size: 28),
+                                    : Icon(Icons.view_list_rounded,
+                                        color: textWhite, size: 24),
                                 onPressed: () {
                                   setState(() {
                                     viewType = !viewType;
@@ -74,57 +75,7 @@ class _FavoritesState extends State<Favorites> {
                 child: Container(),
               ),
             ),
-            // Column(
-            //   children: [
-            //     ClipRect(
-            //       child: BackdropFilter(
-            //         filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-            //         child: Container(
-            //           height: 55,
-            //           decoration: BoxDecoration(
-            //             color: Colors.grey.withOpacity(0.2),
-            //           ),
-            //           child: Padding(
-            //             padding: const EdgeInsets.only(left: 10, right: 10),
-            //             child: Row(
-            //               mainAxisAlignment: MainAxisAlignment.end,
-            //               children: [
-            //                 Row(
-            //                   children: [
-            //                     Text(
-            //                       "Favorite Coins",
-            //                       style: TextStyle(
-            //                           fontWeight: FontWeight.w500,
-            //                           color: textWhite,
-            //                           fontSize: 20),
-            //                     ),
-            //                   ],
-            //                 ),
-            //                 CupertinoButton(
-            //                     padding: EdgeInsets.all(0),
-            //                     child: viewType == true
-            //                         ? Icon(Icons.grid_view,
-            //                             color: textWhite, size: 20)
-            //                         : Icon(Icons.view_list_outlined,
-            //                             color: textWhite, size: 20),
-            //                     onPressed: () {
-            //                       setState(() {
-            //                         viewType = !viewType;
-            //                       });
-            //                     }),
-            //                 CupertinoButton(
-            //                     padding: EdgeInsets.all(0),
-            //                     child: Icon(Icons.edit,
-            //                         color: textWhite, size: 20),
-            //                     onPressed: () {}),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
+           
             SingleChildScrollView(
               child: body(size),
             ),
