@@ -18,9 +18,9 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
 
   List pages = [
     Trending(),
-    Search(),
-    HomePage(),
     Favorites(),
+    HomePage(),
+    Search(),
     SettingsPage(),
   ];
 

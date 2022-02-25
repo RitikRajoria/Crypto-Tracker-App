@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 25.0),
+                filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
                 child: Container(),
               ),
             ),
