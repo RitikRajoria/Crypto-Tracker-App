@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:crypto_app_ui/pages/favorites.dart';
 import 'package:crypto_app_ui/pages/home.dart';
@@ -51,11 +49,11 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
         index: 2,
         height: 60.0,
         items: <Widget>[
-          Icon(Icons.add, size: 30),
-          Icon(Icons.list, size: 30),
-          Icon(Icons.compare_arrows, size: 30),
-          Icon(Icons.call_split, size: 30),
-          Icon(Icons.perm_identity, size: 30),
+          Icon(Icons.trending_up, size: 30),
+          Icon(Icons.star_outline, size: 30),
+          Icon(Icons.home, size: 30),
+          Icon(Icons.search, size: 30),
+          Icon(Icons.settings, size: 30),
         ],
         color: Colors.grey.shade700,
         buttonBackgroundColor: Colors.white,
