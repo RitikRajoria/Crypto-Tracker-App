@@ -12,6 +12,7 @@ class Favorites extends StatefulWidget {
 }
 
 class _FavoritesState extends State<Favorites> {
+  bool editOn = false;
   bool viewType = true; //default value is true, true means grid view
   @override
   Widget build(BuildContext context) {
@@ -21,14 +22,16 @@ class _FavoritesState extends State<Favorites> {
       appBar: AppBar(
         elevation: 0,
         flexibleSpace: ClipRect(
-          child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          child: Container(),
-        ),),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(),
+          ),
+        ),
         backgroundColor: Colors.grey.withOpacity(0.2),
         centerTitle: true,
         title: Text(
           "Favorite Coins",
-          style:TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w400,
             color: Colors.white,
@@ -36,22 +39,23 @@ class _FavoritesState extends State<Favorites> {
         ),
         actions: [
           CupertinoButton(
-                                padding: EdgeInsets.all(0),
-                                child: viewType == true
-                                    ? Icon(Icons.grid_view_rounded,
-                                        color: textWhite, size: 20)
-                                    : Icon(Icons.view_list_rounded,
-                                        color: textWhite, size: 24),
-                                onPressed: () {
-                                  setState(() {
-                                    viewType = !viewType;
-                                  });
-                                }),
-                            CupertinoButton(
-                                padding: EdgeInsets.all(0),
-                                child: Icon(Icons.edit,
-                                    color: textWhite, size: 20),
-                                onPressed: () {}),
+              padding: EdgeInsets.all(0),
+              child: viewType == true
+                  ? Icon(Icons.grid_view_rounded, color: textWhite, size: 20)
+                  : Icon(Icons.view_list_rounded, color: textWhite, size: 24),
+              onPressed: () {
+                setState(() {
+                  viewType = !viewType;
+                });
+              }),
+          CupertinoButton(
+              padding: EdgeInsets.all(0),
+              child: Icon(Icons.edit, color: textWhite, size: 20),
+              onPressed: () {
+                setState(() {
+                  editOn = !editOn;
+                });
+              }),
         ],
       ),
       backgroundColor: bgDark,
@@ -75,7 +79,6 @@ class _FavoritesState extends State<Favorites> {
                 child: Container(),
               ),
             ),
-           
             SingleChildScrollView(
               child: body(size),
             ),
@@ -87,287 +90,291 @@ class _FavoritesState extends State<Favorites> {
 
   Center body(size) {
     return Center(
-        child: Column(
-      children: List.generate(
-        12,
-        (index) => viewType == false
-            ? Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(49),
+      child: Column(
+        children: [
+          Column(
+            children: viewType
+                ? List.generate(
+                    12,
+                    (index) => Padding(
+                      padding:
+                          const EdgeInsets.only(left: 10, right: 10, top: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
                         child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
+                          filter: ImageFilter.blur(sigmaX: 60.0, sigmaY: 0),
                           child: Container(
-                            height: (size.width + 30) * 0.50,
-                            width: (size.width - 10) * 0.46,
+                            padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(49),
+                              borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                width: 1,
-                                color: Colors.greenAccent.shade700,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, top: 28, right: 5),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 45,
-                                        width: 45,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(24),
-                                        ),
-                                      ),
-                                      SizedBox(width: 12),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "ETH",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              color: textWhite,
-                                            ),
-                                          ),
-                                          Text(
-                                            "Ethereum",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, top: 5, right: 5, bottom: 8),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    // mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "\$373,98",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: textWhite,
-                                        ),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            " +4,33%",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.greenAccent[700]),
-                                          ),
-                                          Icon(Icons.arrow_upward,
-                                              size: 16,
-                                              color: Colors.greenAccent[700]),
-                                        ],
-                                      ), //change in currency,s value text
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(49),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-                          child: Container(
-                            height: (size.width + 30) * 0.50,
-                            width: (size.width - 10) * 0.46,
-                            decoration: BoxDecoration(
+                                  width: 0.2,
+                                  color: Colors.white.withOpacity(0.5)),
                               color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(49),
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.redAccent.shade700,
-                              ),
                             ),
-                            child: Column(
+                            height: 80,
+                            width: (size.width - 10) * 0.95,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, top: 28, right: 5),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 45,
-                                        width: 45,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(24),
-                                        ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(24),
                                       ),
-                                      SizedBox(width: 12),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text("BNB",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                                color: textWhite,
-                                              )),
-                                          Text("Binance",
-                                              style: TextStyle(fontSize: 12)),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, top: 5, right: 5, bottom: 8),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    // mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "\$245,98",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: textWhite,
-                                        ),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "-3,42%",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.redAccent[700]),
-                                          ),
-                                          Icon(Icons.arrow_downward,
-                                              size: 16,
-                                              color: Colors.redAccent[700]),
-                                        ],
-                                      ), //change in currency,s value text
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        color: Colors.grey.withOpacity(0.2),
-                      ),
-                      height: 80,
-                      width: (size.width - 10) * 0.95,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Coin Name",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: textWhite,
                                     ),
-                                  ),
-                                  Text(
-                                    "BNB",
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.grey),
-                                  ), //extra alt text for coin
-                                ],
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "\$373,98",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: textWhite,
+                                    SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Coin Name",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: textWhite,
+                                          ),
+                                        ),
+                                        Text(
+                                          "BNB",
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.grey),
+                                        ), //extra alt text for coin
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              SizedBox(height: 3),
-                              Row(
-                                children: [
-                                  Text(
-                                    "+4,33%",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.greenAccent[700]),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "\$373,98",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: textWhite,
+                                      ),
+                                    ),
+                                    SizedBox(height: 3),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "+4,33%",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.greenAccent[700]),
+                                        ),
+                                        Icon(Icons.arrow_upward,
+                                            size: 16,
+                                            color: Colors.greenAccent[700]),
+                                      ],
+                                    ), //change in currency,s value text
+                                  ],
+                                ),
+                                if (editOn)
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(0),
+                                        height: 30,
+                                        width: 30,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                              width: 0.3,
+                                              color: Colors.white
+                                                  .withOpacity(0.5)),
+                                          color: Colors.grey.withOpacity(0.3),
+                                        ),
+                                        child: IconButton(
+                                          icon: Icon(Icons.close,
+                                              size: 14, color: Colors.white70),
+                                          onPressed: () {},
+                                          padding: EdgeInsets.only(),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Icon(Icons.arrow_upward,
-                                      size: 16, color: Colors.greenAccent[700]),
-                                ],
-                              ), //change in currency,s value text
-                            ],
+                              ],
+                            ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
+                  )
+                : [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: GridView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 230,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10),
+                          itemCount: 12,
+                          itemBuilder: (BuildContext ctx, index) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                    sigmaX: 30.0, sigmaY: 30.0),
+                                child: Container(
+                                  height: (size.width + 30) * 0.50,
+                                  width: (size.width - 10) * 0.46,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.greenAccent.shade700,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Visibility(
+                                            visible: editOn,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10,
+                                                  bottom: 0,
+                                                  top: 10),
+                                              child: Container(
+                                                height: 20,
+                                                width: 20,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                      width: 0.2,
+                                                      color: Colors.white),
+                                                ),
+                                                child: IconButton(
+                                                  icon: Icon(
+                                                    Icons.close,
+                                                    size: 14,
+                                                    color: Colors.white70,
+                                                  ),
+                                                  onPressed: () {},
+                                                  padding: EdgeInsets.all(0),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Visibility(
+                                            visible: !editOn,
+                                            child: Container(
+                                                height: 30, width: 30),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, top: 0, right: 5),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: 45,
+                                              width: 45,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey,
+                                                borderRadius:
+                                                    BorderRadius.circular(24),
+                                              ),
+                                            ),
+                                            SizedBox(height: 3),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "ETH",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: textWhite,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Ethereum",
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15,
+                                            top: 5,
+                                            right: 5,
+                                            bottom: 8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          // mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "\$373,98",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: textWhite,
+                                              ),
+                                            ),
+                                            SizedBox(height: 3),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  " +4,33%",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors
+                                                          .greenAccent[700]),
+                                                ),
+                                                Icon(Icons.arrow_upward,
+                                                    size: 16,
+                                                    color: Colors
+                                                        .greenAccent[700]),
+                                              ],
+                                            ), //change in currency,s value text
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+          ),
+          SizedBox(height: 75),
+        ],
       ),
-    ));
+    );
   }
 }
