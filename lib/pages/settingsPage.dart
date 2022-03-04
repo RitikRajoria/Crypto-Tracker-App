@@ -10,6 +10,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool themeSwitch = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -52,25 +53,15 @@ class _SettingsPageState extends State<SettingsPage> {
 //blur background
 //first edit profile container
             SingleChildScrollView(
-              child: body(size: size),
+              child: body(size),
             ),
           ],
         ),
       ),
     );
   }
-}
 
-class body extends StatelessWidget {
-  const body({
-    Key? key,
-    required this.size,
-  }) : super(key: key);
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
+  Padding body(Size size) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Column(
@@ -82,7 +73,7 @@ class body extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.2),
-                  borderRadius: BorderRadius.only(),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
                   children: [
@@ -119,39 +110,42 @@ class body extends StatelessWidget {
                         ],
                       ),
                     ),
-                    TextButton(
-                      style: ButtonStyle(
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                    Container(
+                      height: 45,
+                      width: (size.width - 60) * 0.4,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0.5, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white.withOpacity(0.3),
                       ),
-                      onPressed: () {
-                        print("tapped and working");
-                      },
-                      child: Container(
-                        height: 45,
-                        width: (size.width - 60) * 0.4,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 0.5, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white.withOpacity(0.3),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("Edit Profile",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w300)),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white.withOpacity(0.7),
-                                size: 16,
-                              ),
-                            ],
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: TextButton(
+                          style: ButtonStyle(
+                            overlayColor: MaterialStateProperty.all(
+                                Colors.grey.withOpacity(0.8)),
+                          ),
+                          onPressed: () {
+                            print("tapped and working");
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Edit Profile",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w300)),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white.withOpacity(0.7),
+                                  size: 16,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -180,20 +174,21 @@ class body extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            width: size.width,
-            color: Colors.grey.withOpacity(0.3),
-            child: ClipRect(
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              width: size.width,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.3),
+               borderRadius: BorderRadius.circular(10),
+              ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                 child: Column(
                   children: [
-                    Divider(
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 10, bottom: 8),
+                          left: 15, right: 15, top: 12, bottom: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -217,7 +212,7 @@ class body extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 8, bottom: 10),
+                          left: 15, right: 15, top: 8, bottom: 12),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -235,9 +230,6 @@ class body extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                    Divider(
-                      color: Colors.grey.withOpacity(0.3),
                     ),
                   ],
                 ),
@@ -262,10 +254,14 @@ class body extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            width: size.width,
-            color: Colors.grey.withOpacity(0.3),
-            child: ClipRect(
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              width: size.width,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+              ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                 child: Column(
@@ -317,8 +313,18 @@ class body extends StatelessWidget {
                               fontSize: 18,
                             ),
                           ),
-                          CupertinoSwitch(
-                              value: false, onChanged: (context) {}),
+                          Transform.scale(
+                            scale: 0.7,
+                            child: CupertinoSwitch(
+                              value: themeSwitch,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  themeSwitch = value;
+                                });
+                                print(value);
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -340,7 +346,7 @@ class body extends StatelessWidget {
                           ),
                           Icon(
                             Icons.logout,
-                            size: 18,
+                            size: 20,
                             color: Colors.white,
                           ),
                         ],

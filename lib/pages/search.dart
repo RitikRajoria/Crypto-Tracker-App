@@ -15,7 +15,7 @@ class _SearchState extends State<Search> {
   Icon cusIcon = Icon(Icons.search);
   Widget cusSearchBar = Text("Search");
 
-  FocusNode focusSearchField = FocusNode();
+  FocusNode focusSearch = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,7 @@ class _SearchState extends State<Search> {
         actions: [
           IconButton(
             splashRadius: 18,
+            
             icon: cusIcon,
             onPressed: () {
               setState(() {
@@ -45,8 +46,11 @@ class _SearchState extends State<Search> {
                   this.cusIcon = Icon(Icons.close);
                   this.cusSearchBar = TextField(
                     textInputAction: TextInputAction.search,
+                    focusNode: focusSearch,
+                    autofocus: true,
                     style: TextStyle(
                       color: Colors.white,
+                      
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
                     ),

@@ -326,9 +326,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Text(
                   "View All",
-                  style: TextStyle(
-                    color: textWhite,
-                  ),
+                  style: TextStyle(color: Colors.amber),
                 ),
               ],
             ),
