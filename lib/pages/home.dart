@@ -14,6 +14,40 @@ class _HomePageState extends State<HomePage> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      drawer: Drawer(
+        child: Center(
+          child: Text("Drawer"),
+        ),
+      ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(),
+          ),
+        ),
+        backgroundColor: Colors.grey.withOpacity(0.2),
+        centerTitle: true,
+        leading: IconButton(onPressed: (){
+           Scaffold.of(context).openDrawer();
+        }, icon: Icon(Icons.menu)),
+        title: Text(
+          "Crypto Tracker",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Icon(Icons.person),
+          ),
+        ],
+      ),
       backgroundColor: bgDark,
       body: SafeArea(
         child: Stack(
@@ -37,22 +71,6 @@ class _HomePageState extends State<HomePage> {
                 child: Container(),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.menu, color: textWhite, size: 28),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.notifications, color: textWhite, size: 28),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
 
             //main body
             SingleChildScrollView(
@@ -64,18 +82,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Center body(size) {
+  Widget body(size) {
     return Center(
       child: Column(
         children: [
-          SizedBox(height: 50), //Avatar and user name
+          //Avatar and user name
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Container(
               height: 100,
               width: 100,
               decoration: BoxDecoration(
-                color: textWhite,
+                color: Colors.grey,
                 border: Border.all(width: 2, color: Colors.red),
                 shape: BoxShape.circle,
               ),
