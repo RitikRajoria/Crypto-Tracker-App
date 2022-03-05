@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       // drawer: Drawer(),
       debugShowCheckedModeBanner: false,
       
-      home: CoinPage(),
+      home: HomePage(),
       
       routes: {
         // MyRoutes.loginRoute: (context) => LoginPage(),

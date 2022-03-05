@@ -1,3 +1,4 @@
+import 'package:crypto_app_ui/pages/coinPage.dart';
 import 'package:crypto_app_ui/themes/colors.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -152,91 +153,100 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(49),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-                    child: Container(
-                      height: (size.width + 30) * 0.50,
-                      width: (size.width - 10) * 0.46,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(49),
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.greenAccent.shade700,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CoinPage()),
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(49),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
+                      child: Container(
+                        height: (size.width + 30) * 0.50,
+                        width: (size.width - 10) * 0.46,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(49),
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.greenAccent.shade700,
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, top: 28, right: 5),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 45,
-                                  width: 45,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(24),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, top: 28, right: 5),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 45,
+                                    width: 45,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 12),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "ETH",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                        color: textWhite,
+                                  const SizedBox(width: 12),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "ETH",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: textWhite,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Ethereum",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, top: 5, right: 5, bottom: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              // mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "\$373,98",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: textWhite,
+                                      Text(
+                                        "Ethereum",
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const SizedBox(height: 3),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      " +4,33%",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.greenAccent[700]),
-                                    ),
-                                    Icon(Icons.arrow_upward,
-                                        size: 16,
-                                        color: Colors.greenAccent[700]),
-                                  ],
-                                ), //change in currency,s value text
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, top: 5, right: 5, bottom: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                // mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "\$373,98",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: textWhite,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        " +4,33%",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.greenAccent[700]),
+                                      ),
+                                      Icon(Icons.arrow_upward,
+                                          size: 16,
+                                          color: Colors.greenAccent[700]),
+                                    ],
+                                  ), //change in currency,s value text
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
