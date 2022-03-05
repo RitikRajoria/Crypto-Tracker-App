@@ -156,7 +156,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Padding(
             padding:
-                const EdgeInsets.only(left: 14, right: 10, top: 15, bottom: 15),
+                const EdgeInsets.only(left: 14, right: 10, top: 13, bottom: 13),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -236,7 +236,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Padding(
             padding:
-                const EdgeInsets.only(left: 14, right: 10, top: 15, bottom: 15),
+                const EdgeInsets.only(left: 14, right: 10, top: 13, bottom: 13),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -300,7 +300,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 1, bottom: 1),
+                          left: 15, right: 8, top: 0, bottom: 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -312,7 +312,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           ),
                           Transform.scale(
-                            scale: 0.7,
+                            scale: 0.8,
                             child: CupertinoSwitch(
                               value: themeSwitch,
                               onChanged: (bool value) {
@@ -344,7 +344,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           Icon(
                             Icons.logout,
-                            size: 20,
+                            size: 22,
                             color: Colors.white,
                           ),
                         ],
@@ -355,7 +355,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
-          const SizedBox(height: 70),
+          const SizedBox(height: 60),
         ],
       ),
     );

@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       // drawer: Drawer(),
       debugShowCheckedModeBanner: false,
       
-      home: HomePage(),
+      home: HomePageNavbar(),
       
       routes: {
         // MyRoutes.loginRoute: (context) => LoginPage(),
