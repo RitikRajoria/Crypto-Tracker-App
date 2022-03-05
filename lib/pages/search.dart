@@ -23,7 +23,6 @@ class _SearchState extends State<Search> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        
         elevation: 0,
         flexibleSpace: ClipRect(
           child: BackdropFilter(
@@ -31,14 +30,12 @@ class _SearchState extends State<Search> {
             child: Container(),
           ),
         ),
-        
         backgroundColor: Colors.grey.withOpacity(0.2),
         centerTitle: true,
         title: cusSearchBar,
         actions: [
           IconButton(
             splashRadius: 18,
-            
             icon: cusIcon,
             onPressed: () {
               setState(() {
@@ -50,7 +47,6 @@ class _SearchState extends State<Search> {
                     autofocus: true,
                     style: TextStyle(
                       color: Colors.white,
-                      
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
                     ),
@@ -62,8 +58,6 @@ class _SearchState extends State<Search> {
                         color: Colors.white.withOpacity(0.5),
                       ),
                     ),
-                    
-                    
                   );
                 } else {
                   cusIcon = Icon(Icons.search);
@@ -73,7 +67,6 @@ class _SearchState extends State<Search> {
             },
           ),
           CupertinoButton(
-            
               padding: EdgeInsets.all(0),
               child: viewType == true
                   ? Icon(Icons.grid_view_rounded, color: textWhite, size: 20)
@@ -155,7 +148,7 @@ class _SearchState extends State<Search> {
                                         borderRadius: BorderRadius.circular(24),
                                       ),
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -191,7 +184,7 @@ class _SearchState extends State<Search> {
                                         color: textWhite,
                                       ),
                                     ),
-                                    SizedBox(height: 3),
+                                    const SizedBox(height: 3),
                                     Row(
                                       children: [
                                         Text(
@@ -259,7 +252,7 @@ class _SearchState extends State<Search> {
                                                     BorderRadius.circular(24),
                                               ),
                                             ),
-                                            SizedBox(height: 3),
+                                            const SizedBox(height: 3),
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
@@ -301,7 +294,7 @@ class _SearchState extends State<Search> {
                                                 color: textWhite,
                                               ),
                                             ),
-                                            SizedBox(height: 3),
+                                            const SizedBox(height: 3),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -331,7 +324,7 @@ class _SearchState extends State<Search> {
                     ),
                   ],
           ),
-          SizedBox(height: 75),
+          const SizedBox(height: 75),
         ],
       ),
     );

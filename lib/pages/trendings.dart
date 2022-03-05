@@ -15,8 +15,7 @@ class _TrendingState extends State<Trending> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      
-        extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         flexibleSpace: ClipRect(
@@ -46,7 +45,6 @@ class _TrendingState extends State<Trending> {
                   viewType = !viewType;
                 });
               }),
-          
         ],
       ),
       backgroundColor: bgDark,
@@ -119,7 +117,7 @@ class _TrendingState extends State<Trending> {
                                         borderRadius: BorderRadius.circular(24),
                                       ),
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -155,7 +153,7 @@ class _TrendingState extends State<Trending> {
                                         color: textWhite,
                                       ),
                                     ),
-                                    SizedBox(height: 3),
+                                    const SizedBox(height: 3),
                                     Row(
                                       children: [
                                         Text(
@@ -171,7 +169,6 @@ class _TrendingState extends State<Trending> {
                                     ), //change in currency,s value text
                                   ],
                                 ),
-                                
                               ],
                             ),
                           ),
@@ -210,7 +207,6 @@ class _TrendingState extends State<Trending> {
                                   ),
                                   child: Column(
                                     children: [
-                                      
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             left: 15, top: 20, right: 5),
@@ -225,7 +221,7 @@ class _TrendingState extends State<Trending> {
                                                     BorderRadius.circular(24),
                                               ),
                                             ),
-                                            SizedBox(height: 3),
+                                            const SizedBox(height: 3),
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
@@ -267,7 +263,7 @@ class _TrendingState extends State<Trending> {
                                                 color: textWhite,
                                               ),
                                             ),
-                                            SizedBox(height: 3),
+                                            const SizedBox(height: 3),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -297,9 +293,9 @@ class _TrendingState extends State<Trending> {
                     ),
                   ],
           ),
-          SizedBox(height: 75),
+          const SizedBox(height: 75),
         ],
       ),
     );
-}
+  }
 }

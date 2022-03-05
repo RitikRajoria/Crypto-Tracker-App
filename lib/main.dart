@@ -1,5 +1,6 @@
 
 import 'package:crypto_app_ui/homepage_navbar.dart';
+import 'package:crypto_app_ui/pages/coinPage.dart';
 import 'package:crypto_app_ui/pages/home.dart';
 import 'package:crypto_app_ui/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       // drawer: Drawer(),
       debugShowCheckedModeBanner: false,
       
-      home: HomePageNavbar(),
+      home: CoinPage(),
       
       routes: {
         // MyRoutes.loginRoute: (context) => LoginPage(),

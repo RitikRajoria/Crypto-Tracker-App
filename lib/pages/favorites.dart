@@ -128,7 +128,7 @@ class _FavoritesState extends State<Favorites> {
                                         borderRadius: BorderRadius.circular(24),
                                       ),
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -164,7 +164,7 @@ class _FavoritesState extends State<Favorites> {
                                         color: textWhite,
                                       ),
                                     ),
-                                    SizedBox(height: 3),
+                                    const SizedBox(height: 3),
                                     Row(
                                       children: [
                                         Text(
@@ -300,7 +300,7 @@ class _FavoritesState extends State<Favorites> {
                                                     BorderRadius.circular(24),
                                               ),
                                             ),
-                                            SizedBox(height: 3),
+                                            const SizedBox(height: 3),
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
@@ -342,7 +342,7 @@ class _FavoritesState extends State<Favorites> {
                                                 color: textWhite,
                                               ),
                                             ),
-                                            SizedBox(height: 3),
+                                            const SizedBox(height: 3),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -372,7 +372,7 @@ class _FavoritesState extends State<Favorites> {
                     ),
                   ],
           ),
-          SizedBox(height: 75),
+          const SizedBox(height: 75),
         ],
       ),
     );

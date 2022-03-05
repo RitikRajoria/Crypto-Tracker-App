@@ -30,9 +30,11 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Colors.grey.withOpacity(0.2),
         centerTitle: true,
-        leading: IconButton(onPressed: (){
-           Scaffold.of(context).openDrawer();
-        }, icon: Icon(Icons.menu)),
+        leading: IconButton(
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            icon: Icon(Icons.menu)),
         title: Text(
           "Crypto Tracker",
           style: TextStyle(
@@ -99,17 +101,17 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Text(
             "Hey, Welcome back 👋",
             style: TextStyle(color: textWhite),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             "User Name",
             style: TextStyle(fontSize: 20, color: textWhite),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           //favorites tab
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 5),
@@ -142,7 +144,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
 
           //favorites cards
           Padding(
@@ -180,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(24),
                                   ),
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -216,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                                     color: textWhite,
                                   ),
                                 ),
-                                SizedBox(height: 3),
+                                const SizedBox(height: 3),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -269,7 +271,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(24),
                                   ),
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -301,7 +303,7 @@ class _HomePageState extends State<HomePage> {
                                     color: textWhite,
                                   ),
                                 ),
-                                SizedBox(height: 3),
+                                const SizedBox(height: 3),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -326,7 +328,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
 
           //recommendations tab
           Padding(
@@ -380,7 +382,7 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius: BorderRadius.circular(24),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -414,7 +416,7 @@ class _HomePageState extends State<HomePage> {
                                   color: textWhite,
                                 ),
                               ),
-                              SizedBox(height: 3),
+                              const SizedBox(height: 3),
                               Row(
                                 children: [
                                   Text(
@@ -437,7 +439,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          SizedBox(height: 78),
+          const SizedBox(height: 78),
         ],
       ),
     );

@@ -52,21 +52,19 @@ class _SettingsPageState extends State<SettingsPage> {
 
 //blur background
 //first edit profile container
-            SingleChildScrollView(
-              child: body(size),
-            ),
+            body(size),
           ],
         ),
       ),
     );
   }
 
-  Padding body(Size size) {
+  Widget body(Size size) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Column(
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ClipRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
@@ -77,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
                       height: (size.height - 228) * 0.3,
                       width: size.width,
@@ -91,7 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               color: Colors.grey,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             "User Name",
                             style: TextStyle(
@@ -99,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w400),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
                             "example@xyzmail.com",
                             style: TextStyle(
@@ -150,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15)
+                    const SizedBox(height: 15)
                   ],
                 ),
               ),
@@ -180,7 +178,7 @@ class _SettingsPageState extends State<SettingsPage> {
               width: size.width,
               decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.3),
-               borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
@@ -260,7 +258,7 @@ class _SettingsPageState extends State<SettingsPage> {
               width: size.width,
               decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
@@ -286,7 +284,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 style: TextStyle(
                                     color: Colors.grey.withOpacity(0.8)),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Icon(
                                 Icons.arrow_forward_ios,
                                 size: 18,
@@ -357,7 +355,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
-          SizedBox(height: 70),
+          const SizedBox(height: 70),
         ],
       ),
     );
