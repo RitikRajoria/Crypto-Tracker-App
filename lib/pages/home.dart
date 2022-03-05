@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       Text(
                                         "Ethereum",
-                                        style: TextStyle(fontSize: 12),
+                                        style: TextStyle(fontSize: 14,color: Colors.white.withOpacity(0.6)),
                                       ),
                                     ],
                                   ),
@@ -245,92 +245,112 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
+                            Container(
+                              height: 85.36,
+                              // width: (size.width),
+                              // color: Colors.grey,
+                              child: LineChartWidget(),
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
                 ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(49),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-                    child: Container(
-                      height: (size.width + 30) * 0.50,
-                      width: (size.width - 10) * 0.46,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(49),
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.redAccent.shade700,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CoinPage()),
+                    );              
+                  },
+                                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(49),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
+                      child: Container(
+                        height: (size.width + 30) * 0.50,
+                        width: (size.width - 10) * 0.46,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(49),
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.redAccent.shade700,
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, top: 28, right: 5),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 45,
-                                  width: 45,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("BNB",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          color: textWhite,
-                                        )),
-                                    Text("Binance",
-                                        style: TextStyle(fontSize: 12)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, top: 5, right: 5, bottom: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              // mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "\$245,98",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: textWhite,
-                                  ),
-                                ),
-                                const SizedBox(height: 3),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "-3,42%",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.redAccent[700]),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, top: 28, right: 5),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 45,
+                                    width: 45,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(24),
                                     ),
-                                    Icon(Icons.arrow_downward,
-                                        size: 16, color: Colors.redAccent[700]),
-                                  ],
-                                ), //change in currency,s value text
-                              ],
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("BNB",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: textWhite,
+                                          )),
+                                      Text("Binance",
+                                          style: TextStyle(fontSize: 14,color: Colors.white.withOpacity(0.6))),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, top: 5, right: 5, bottom: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                // mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "\$245,98",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: textWhite,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "-3,42%",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.redAccent[400]),
+                                      ),
+                                      Icon(Icons.arrow_downward,
+                                          size: 16, color: Colors.redAccent[400]),
+                                    ],
+                                  ), //change in currency,s value text
+                                ],
+                              ),
+                            ),
+                            Container(
+                                height: 85.36,
+                                // width: (size.width),
+                                // color: Colors.grey,
+                                child: LineChartWidget2(),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -451,6 +471,151 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 78),
         ],
+      ),
+    );
+  }
+}
+
+class LineChartWidget extends StatelessWidget {
+  final List<Color> gradientColor = [
+    Colors.greenAccent.shade700.withOpacity(0.3),
+    Colors.greenAccent.shade700,
+    Colors.greenAccent.shade700,
+    Colors.greenAccent.shade700,
+    Colors.greenAccent.shade700.withOpacity(0.3),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return LineChart(
+      LineChartData(
+        minX: 0,
+        minY: 0,
+        maxX: 8,
+        maxY: 7,
+        titlesData: LineTitles.getTitleData(),
+        lineBarsData: [
+          LineChartBarData(
+            spots: [
+              FlSpot(-2, 3),
+              FlSpot(0, 3),
+              FlSpot(1, 2),
+              FlSpot(2, 4),
+              FlSpot(3, 2),
+              FlSpot(3.4, 4),
+              FlSpot(3.8, 3),
+              FlSpot(4.1, 4),
+              FlSpot(4.8, 5),
+              FlSpot(5.2, 4),
+              FlSpot(6.5, 6),
+              FlSpot(7, 5),
+              FlSpot(8, 5),
+              FlSpot(9, 3.8),
+              FlSpot(13, 6),
+            ],
+            colors: gradientColor,
+            barWidth: 2,
+            dotData: FlDotData(show: false),
+            belowBarData: BarAreaData(
+              show: true,
+              colors: gradientColor.map((e) => e.withOpacity(0.3)).toList(),
+            ),
+          ),
+        ],
+        gridData: FlGridData(
+          show: false,
+        ),
+        borderData: FlBorderData(
+          show: false,
+        ),
+      ),
+    );
+  }
+}
+
+class LineTitles {
+  static getTitleData() => FlTitlesData(
+        show: true,
+        bottomTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 1,
+          getTitles: (value) {
+            switch (value.toInt()) {
+            }
+            return '';
+          },
+          margin: 0,
+        ),
+        leftTitles: SideTitles(
+          showTitles: true,
+          getTitles: (value) {
+            switch (value.toInt()) {
+            }
+            return '';
+          },
+        ),
+        rightTitles: SideTitles(
+          showTitles: true,
+          getTitles: (value) {
+            switch (value.toInt()) {
+            }
+            return '';
+          },
+        ),
+        topTitles: SideTitles(showTitles: false),
+      );
+}
+
+class LineChartWidget2 extends StatelessWidget {
+  final List<Color> gradientColor = [
+    Colors.redAccent.shade700.withOpacity(0.3),
+    Colors.redAccent.shade700,
+    Colors.redAccent.shade700,
+    Colors.redAccent.shade700,
+    Colors.redAccent.shade700.withOpacity(0.3),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return LineChart(
+      LineChartData(
+        minX: 0,
+        minY: 0,
+        maxX: 8,
+        maxY: 7,
+        titlesData: LineTitles.getTitleData(),
+        lineBarsData: [
+          LineChartBarData(
+            spots: [
+              FlSpot(-2, 2),
+              FlSpot(0, 2),
+              FlSpot(1, 3),
+              FlSpot(2, 5),
+              FlSpot(3, 2),
+              FlSpot(3.4, 4.3),
+              FlSpot(3.8, 3.6),
+              FlSpot(4.1, 5.2),
+              FlSpot(4.8, 4.3),
+              FlSpot(5.2, 4),
+              FlSpot(6.5, 4.5),
+              FlSpot(7, 4),
+              FlSpot(8, 3.5),
+              FlSpot(9, 3.3),
+              FlSpot(13, 3),
+            ],
+            colors: gradientColor,
+            barWidth: 2,
+            dotData: FlDotData(show: false),
+            belowBarData: BarAreaData(
+              show: true,
+              colors: gradientColor.map((e) => e.withOpacity(0.3)).toList(),
+            ),
+          ),
+        ],
+        gridData: FlGridData(
+          show: false,
+        ),
+        borderData: FlBorderData(
+          show: false,
+        ),
       ),
     );
   }
