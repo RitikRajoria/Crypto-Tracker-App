@@ -245,10 +245,8 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
-                            Container(
-                              height: 85.36,
-                              // width: (size.width),
-                              // color: Colors.grey,
+                            Expanded(
+                              
                               child: LineChartWidget(),
                             ),
                           ],
@@ -343,10 +341,8 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
-                            Container(
-                                height: 85.36,
-                                // width: (size.width),
-                                // color: Colors.grey,
+                            Expanded(
+                                
                                 child: LineChartWidget2(),
                               ),
                           ],
