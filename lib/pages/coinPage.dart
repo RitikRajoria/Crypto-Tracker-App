@@ -75,6 +75,7 @@ class _CoinPageState extends State<CoinPage> {
     );
   }
 
+
   Widget body(size) {
     bool isTabSelected = false;
     
@@ -314,6 +315,7 @@ class LineChartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineChart(
       LineChartData(
+        
         minX: 0,
         minY: 0,
         maxX: 8,

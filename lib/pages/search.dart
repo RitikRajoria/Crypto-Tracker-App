@@ -1,4 +1,6 @@
 import 'dart:ui';
+
+import 'package:crypto_app_ui/models/crypto_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../themes/colors.dart';
@@ -16,6 +18,9 @@ class _SearchState extends State<Search> {
   Widget cusSearchBar = Text("Search");
 
   FocusNode focusSearch = FocusNode();
+
+  final _dataService = DataService();
+  final _searchCoin = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,7 @@ class _SearchState extends State<Search> {
                   this.cusSearchBar = TextField(
                     textInputAction: TextInputAction.search,
                     focusNode: focusSearch,
+                    controller: _searchCoin,
                     autofocus: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -324,9 +330,15 @@ class _SearchState extends State<Search> {
                     ),
                   ],
           ),
+          TextButton(onPressed: _getRepo, child: Text("tap for response"),),
           const SizedBox(height: 75),
         ],
       ),
     );
   }
+  void _getRepo() {
+  _dataService.getData(_searchCoin.text);
+  print(_searchCoin.text);
 }
+}
+

@@ -484,6 +484,9 @@ class LineChartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineChart(
       LineChartData(
+        lineTouchData: LineTouchData(
+          handleBuiltInTouches: false,
+        ),
         minX: 0,
         minY: 0,
         maxX: 8,
@@ -569,10 +572,14 @@ class LineChartWidget2 extends StatelessWidget {
     Colors.redAccent.shade700,
     Colors.redAccent.shade700.withOpacity(0.3),
   ];
+  
   @override
   Widget build(BuildContext context) {
     return LineChart(
       LineChartData(
+        lineTouchData: LineTouchData(
+          handleBuiltInTouches: false,
+        ),
         minX: 0,
         minY: 0,
         maxX: 8,
@@ -598,6 +605,7 @@ class LineChartWidget2 extends StatelessWidget {
               FlSpot(13, 3),
             ],
             colors: gradientColor,
+
             barWidth: 2,
             dotData: FlDotData(show: false),
             belowBarData: BarAreaData(
