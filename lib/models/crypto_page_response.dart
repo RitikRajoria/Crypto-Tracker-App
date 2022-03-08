@@ -30,6 +30,7 @@ class CryptoListing {
     final sparkline = json['sparkline'];
     final rank = json['rank'];
     final name = json['name'];
+    
 
     return CryptoListing(
       name: name,
@@ -50,6 +51,7 @@ class CryptoPageResponse{
   CryptoPageResponse({required this.cryptoListing});
   
   factory CryptoPageResponse.fromJson(Map<String, dynamic> json){
+
     final cryptoListing = (json['data']['coins'] as List).map((listingjson) => CryptoListing.fromJson(listingjson)).toList();
 
     return CryptoPageResponse(cryptoListing: cryptoListing);

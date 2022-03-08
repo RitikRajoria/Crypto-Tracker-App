@@ -1,8 +1,11 @@
 import 'dart:ui';
 
+import 'package:crypto_app_ui/models/crypto_page_response.dart';
+import 'package:crypto_app_ui/models/crypto_response.dart';
 import 'package:crypto_app_ui/themes/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 
 class Trending extends StatefulWidget {
   @override
@@ -10,9 +13,32 @@ class Trending extends StatefulWidget {
 }
 
 class _TrendingState extends State<Trending> {
-  bool viewType = false; //default value is false, false means grid view
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+    
+    
+  }
+
+  bool isLoading = false;
+
+  Future getData() async {
+    isLoading = true;
+    _cryptoData = await CryptoRepository().getCryptoPage();
+    isLoading = false;
+    setState(() {
+      
+    });
+
+  }
+
+  CryptoPageResponse? _cryptoData;
+  bool viewType = true; //default value is false, false means grid view
   @override
   Widget build(BuildContext context) {
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -49,7 +75,7 @@ class _TrendingState extends State<Trending> {
       ),
       backgroundColor: bgDark,
       body: SafeArea(
-        child: Stack(
+        child: isLoading ? Center(child: CircularProgressIndicator()) : Stack(
           children: [
             Container(
               height: size.height,
@@ -82,101 +108,196 @@ class _TrendingState extends State<Trending> {
       child: Column(
         children: [
           Column(
-            children: viewType
-                ? List.generate(
-                    12,
-                    (index) => Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 10, top: 8),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 60.0, sigmaY: 0),
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                  width: 0.2,
-                                  color: Colors.white.withOpacity(0.5)),
-                              color: Colors.grey.withOpacity(0.2),
-                            ),
-                            height: 80,
-                            width: (size.width - 10) * 0.95,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(24),
+            children:[
+               viewType ?
+                Container(height: (size.height-20),
+                                  child: ListView.builder(itemCount: _cryptoData?.cryptoListing.length, itemBuilder: (context, index){
+                    return Padding(
+                        padding:
+                            const EdgeInsets.only(left: 10, right: 10, top: 8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 60.0, sigmaY: 0),
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                    width: 0.2,
+                                    color: Colors.white.withOpacity(0.5)),
+                                color: Colors.grey.withOpacity(0.2),
+                              ),
+                              height: 80,
+                              width: (size.width - 10) * 0.95,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius: BorderRadius.circular(24),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Coin Name",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: textWhite,
+                                      const SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            _cryptoData?.cryptoListing[index].name,
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: textWhite,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "BNB",
-                                          style: TextStyle(
-                                              fontSize: 16, color: Colors.grey),
-                                        ), //extra alt text for coin
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "\$373,98",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: textWhite,
+                                          Text(
+                                             _cryptoData?.cryptoListing[index].symbol,
+                                            style: TextStyle(
+                                                fontSize: 16, color: Colors.grey),
+                                          ), //extra alt text for coin
+                                        ],
                                       ),
-                                    ),
-                                    const SizedBox(height: 3),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "+4,33%",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.greenAccent[700]),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "\$373,98",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: textWhite,
                                         ),
-                                        Icon(Icons.arrow_upward,
-                                            size: 16,
-                                            color: Colors.greenAccent[700]),
-                                      ],
-                                    ), //change in currency,s value text
-                                  ],
-                                ),
-                              ],
+                                      ),
+                                      const SizedBox(height: 3),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "+4,33%",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.greenAccent[700]),
+                                          ),
+                                          Icon(Icons.arrow_upward,
+                                              size: 16,
+                                              color: Colors.greenAccent[700]),
+                                        ],
+                                      ), //change in currency,s value text
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  )
-                : [
+                      );
+                  },),
+                )
+                //  List.generate(
+                //     10,
+                //     (index) => Padding(
+                //       padding:
+                //           const EdgeInsets.only(left: 10, right: 10, top: 8),
+                //       child: ClipRRect(
+                //         borderRadius: BorderRadius.circular(8),
+                //         child: BackdropFilter(
+                //           filter: ImageFilter.blur(sigmaX: 60.0, sigmaY: 0),
+                //           child: Container(
+                //             padding: EdgeInsets.all(8),
+                //             decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(8),
+                //               border: Border.all(
+                //                   width: 0.2,
+                //                   color: Colors.white.withOpacity(0.5)),
+                //               color: Colors.grey.withOpacity(0.2),
+                //             ),
+                //             height: 80,
+                //             width: (size.width - 10) * 0.95,
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Row(
+                //                   crossAxisAlignment: CrossAxisAlignment.center,
+                //                   children: [
+                //                     Container(
+                //                       height: 60,
+                //                       width: 60,
+                //                       decoration: BoxDecoration(
+                //                         color: Colors.grey,
+                //                         borderRadius: BorderRadius.circular(24),
+                //                       ),
+                //                     ),
+                //                     const SizedBox(width: 10),
+                //                     Column(
+                //                       crossAxisAlignment:
+                //                           CrossAxisAlignment.start,
+                //                       mainAxisAlignment:
+                //                           MainAxisAlignment.center,
+                //                       children: [
+                //                         Text(
+                //                           "Coin Name",
+                //                           style: TextStyle(
+                //                             fontSize: 18,
+                //                             fontWeight: FontWeight.bold,
+                //                             color: textWhite,
+                //                           ),
+                //                         ),
+                //                         Text(
+                //                           "BNB",
+                //                           style: TextStyle(
+                //                               fontSize: 16, color: Colors.grey),
+                //                         ), //extra alt text for coin
+                //                       ],
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.center,
+                //                   mainAxisAlignment: MainAxisAlignment.center,
+                //                   children: [
+                //                     Text(
+                //                       "\$373,98",
+                //                       style: TextStyle(
+                //                         fontSize: 18,
+                //                         fontWeight: FontWeight.bold,
+                //                         color: textWhite,
+                //                       ),
+                //                     ),
+                //                     const SizedBox(height: 3),
+                //                     Row(
+                //                       children: [
+                //                         Text(
+                //                           "+4,33%",
+                //                           style: TextStyle(
+                //                               fontSize: 16,
+                //                               color: Colors.greenAccent[700]),
+                //                         ),
+                //                         Icon(Icons.arrow_upward,
+                //                             size: 16,
+                //                             color: Colors.greenAccent[700]),
+                //                       ],
+                //                     ), //change in currency,s value text
+                //                   ],
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   )
+                : 
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: GridView.builder(

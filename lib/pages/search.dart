@@ -19,7 +19,7 @@ class _SearchState extends State<Search> {
 
   FocusNode focusSearch = FocusNode();
 
-  final _dataService = DataService();
+  final _dataService = CryptoRepository();
   final _searchCoin = TextEditingController();
 
   @override
@@ -337,7 +337,7 @@ class _SearchState extends State<Search> {
     );
   }
   void _getRepo() {
-  _dataService.getData(_searchCoin.text);
+  _dataService.getCryptoPage();
   print(_searchCoin.text);
 }
 }
