@@ -4,9 +4,18 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CoinPage extends StatefulWidget {
+
+  final String uuid;
+
+  const CoinPage({Key? key, required this.uuid}) : super(key: key);
+
+  
+
   @override
   _CoinPageState createState() => _CoinPageState();
 }
+
+
 
 class _CoinPageState extends State<CoinPage> {
   List<TabItemModel> tabItems = [
@@ -17,6 +26,8 @@ class _CoinPageState extends State<CoinPage> {
     TabItemModel(isSelected: false, itemText: 'All'),
   ];
   bool favBtn = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -395,3 +406,4 @@ class LineTitles {
         topTitles: SideTitles(showTitles: false),
       );
 }
+

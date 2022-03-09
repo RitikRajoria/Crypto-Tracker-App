@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_app_ui/models/crypto_page_response.dart';
 import 'package:crypto_app_ui/models/crypto_response.dart';
 import 'package:crypto_app_ui/themes/colors.dart';
@@ -26,6 +26,8 @@ class _TrendingState extends State<Trending> {
     isLoading = false;
     setState(() {});
   }
+
+
 
   CryptoPageResponse? _cryptoData;
   bool viewType = true; //default value is false, false means grid view
@@ -105,12 +107,10 @@ class _TrendingState extends State<Trending> {
             children: [
               viewType
                   ? Container(
-                      
                       height: size.height,
                       child: ListView.builder(
                         itemCount: _cryptoData?.cryptoListing.length,
                         itemBuilder: (context, index) {
-                          
                           String price = double.parse(
                                   _cryptoData?.cryptoListing[index].price)
                               .toStringAsFixed(3);
@@ -119,7 +119,7 @@ class _TrendingState extends State<Trending> {
                           String logo = url.replaceAll(".svg", ".png");
                           String change =
                               _cryptoData?.cryptoListing[index].change;
-                          
+
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 10, right: 10, top: 8),
@@ -128,15 +128,16 @@ class _TrendingState extends State<Trending> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: BackdropFilter(
-                                    filter:
-                                        ImageFilter.blur(sigmaX: 60.0, sigmaY: 0),
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 60.0, sigmaY: 0),
                                     child: Container(
                                       padding: EdgeInsets.all(8),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
                                             width: 0.2,
-                                            color: Colors.white.withOpacity(0.5)),
+                                            color:
+                                                Colors.white.withOpacity(0.5)),
                                         color: Colors.grey.withOpacity(0.2),
                                       ),
                                       height: 80,
@@ -150,24 +151,27 @@ class _TrendingState extends State<Trending> {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Container(
-                                                      height: 55,
-                                                      width: 55,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.black
-                                                            .withOpacity(0.2),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                22),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.all(8.0),
-                                                        child: Image.network(
-                                                          logo,
-                                                          fit: BoxFit.contain,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                height: 55,
+                                                width: 55,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black
+                                                      .withOpacity(0.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(22),
+                                                ),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: logo,
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        const CircularProgressIndicator(),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        const Icon(Icons.error,color: Colors.redAccent ),
+                                                  ),
+                                                ),
+                                              ),
                                               const SizedBox(width: 10),
                                               Column(
                                                 crossAxisAlignment:
@@ -176,14 +180,16 @@ class _TrendingState extends State<Trending> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Container(
-                                                    width: (size.width - 10) * 0.4,
+                                                    width:
+                                                        (size.width - 10) * 0.4,
                                                     child: Text(
                                                       _cryptoData
                                                           ?.cryptoListing[index]
                                                           .name,
                                                       style: TextStyle(
                                                         fontSize: 17,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         color: textWhite,
                                                       ),
                                                     ),
@@ -228,12 +234,16 @@ class _TrendingState extends State<Trending> {
                                                           style: TextStyle(
                                                               fontSize: 15,
                                                               color: Colors
-                                                                  .redAccent[700]),
+                                                                      .redAccent[
+                                                                  700]),
                                                         ),
-                                                        Icon(Icons.arrow_downward,
+                                                        Icon(
+                                                            Icons
+                                                                .arrow_downward,
                                                             size: 15,
                                                             color: Colors
-                                                                .redAccent[700]),
+                                                                    .redAccent[
+                                                                700]),
                                                       ],
                                                     )
                                                   : Row(
@@ -249,22 +259,19 @@ class _TrendingState extends State<Trending> {
                                                         Icon(Icons.arrow_upward,
                                                             size: 15,
                                                             color: Colors
-                                                                .greenAccent[700]),
+                                                                    .greenAccent[
+                                                                700]),
                                                       ],
                                                     ),
-                                             //change in currency,s value text
+                                              //change in currency,s value text
                                             ],
                                           ),
-                                          
                                         ],
                                       ),
                                     ),
                                   ),
                                 ),
-                                
-                                if(index == 49)
-                                SizedBox(height: 158),
-                                
+                                if (index == 49) SizedBox(height: 158),
                               ],
                             ),
                           );
@@ -334,9 +341,14 @@ class _TrendingState extends State<Trending> {
                                                   child: Padding(
                                                     padding:
                                                         EdgeInsets.all(8.0),
-                                                    child: Image.network(
-                                                      logo,
-                                                      fit: BoxFit.contain,
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: logo,
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          const CircularProgressIndicator(),
+                                                      errorWidget: (context, url,
+                                                              error) =>
+                                                          const Icon(Icons.error,color: Colors.redAccent ),
                                                     ),
                                                   ),
                                                 ),
@@ -453,3 +465,4 @@ class _TrendingState extends State<Trending> {
     );
   }
 }
+
