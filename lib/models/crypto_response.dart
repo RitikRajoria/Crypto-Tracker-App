@@ -18,6 +18,7 @@ class CryptoRepository {
     log(response.body);
   
     return CryptoPageResponse.fromJson(json);
+    
   }
 }
 
