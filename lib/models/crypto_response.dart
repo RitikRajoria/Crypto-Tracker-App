@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:crypto_app_ui/models/coin_detail_view.dart';
 import 'package:crypto_app_ui/models/crypto_page_response.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +24,8 @@ class CryptoRepository {
 
   }
 
-  Future<CryptoPageResponse> getCryptoCoinPage(String uuid) async {
+  Future<CoinResponse> getCryptoCoinPage({required String uuid}) async {
+    
     final uri = Uri.http(baseUrl, '/v2/coin/$uuid' );
 
     final response = await http.get(uri, headers: {
@@ -33,8 +35,9 @@ class CryptoRepository {
     final json = jsonDecode(response.body);
 
     log(response.body);
-  
-    return CryptoPageResponse.fromJson(json);
+
+    
+    return CoinResponse.fromJson(json);
 
   }
 }

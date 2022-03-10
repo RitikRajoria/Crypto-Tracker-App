@@ -1,15 +1,19 @@
+import 'dart:developer';
 import 'dart:ui';
+import 'package:crypto_app_ui/models/coin_detail_view.dart';
+import 'package:crypto_app_ui/models/crypto_page_response.dart';
+import 'package:crypto_app_ui/models/crypto_response.dart';
 import 'package:crypto_app_ui/themes/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CoinPage extends StatefulWidget {
 
-  final String uuid;
+  final String coinId;
 
-  const CoinPage({Key? key, required this.uuid}) : super(key: key);
+  const CoinPage({Key? key, required this.coinId}) : super(key: key);
 
-  
+
 
   @override
   _CoinPageState createState() => _CoinPageState();
@@ -18,6 +22,31 @@ class CoinPage extends StatefulWidget {
 
 
 class _CoinPageState extends State<CoinPage> {
+
+  @override
+  void initState(){
+    super.initState();
+    getCoinData();
+  }
+
+  bool isLoading = false;
+
+  Future getCoinData() async {
+    // isLoading = true;
+    print("BEEP BOOP");
+    _cryptoCoinData = await CryptoRepository().getCryptoCoinPage(uuid: widget.coinId);
+    // isLoading= false;
+    print(_cryptoCoinData);
+    
+    setState(() {
+      
+    });
+
+    
+  }
+
+CoinResponse? _cryptoCoinData;
+
   List<TabItemModel> tabItems = [
     TabItemModel(isSelected: false, itemText: '1D'),
     TabItemModel(isSelected: true, itemText: '1W'),
@@ -25,6 +54,7 @@ class _CoinPageState extends State<CoinPage> {
     TabItemModel(isSelected: false, itemText: '1Y'),
     TabItemModel(isSelected: false, itemText: 'All'),
   ];
+
   bool favBtn = false;
 
 
@@ -51,7 +81,7 @@ class _CoinPageState extends State<CoinPage> {
             },
             icon: Icon(Icons.arrow_back_ios)),
         title: Text(
-          "<CoinName>",
+          "CoinName",
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w400,
@@ -60,7 +90,9 @@ class _CoinPageState extends State<CoinPage> {
         ),
       ),
       body: SafeArea(
-        child: Stack(
+        child:isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Stack(
           children: [
             Container(
               height: size.height,
@@ -90,6 +122,7 @@ class _CoinPageState extends State<CoinPage> {
   Widget body(size) {
     bool isTabSelected = false;
     
+
 
     return Center(
       child: Column(
@@ -136,7 +169,7 @@ class _CoinPageState extends State<CoinPage> {
               ),
               const SizedBox(width: 12),
               Text(
-                "ETH",
+                "Eth",
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontWeight: FontWeight.w500,

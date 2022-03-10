@@ -30,30 +30,32 @@ class CryptoListing {
     final sparkline = json['sparkline'];
     final rank = json['rank'];
     final name = json['name'];
-    
 
     return CryptoListing(
-      name: name,
-      uuid: uuid,
-      symbol: symbol,
-      iconUrl: iconUrl,
-      change: change,
-      price: price,
-      rank: rank,
-      sparkline: sparkline
-    );
+        name: name,
+        uuid: uuid,
+        symbol: symbol,
+        iconUrl: iconUrl,
+        change: change,
+        price: price,
+        rank: rank,
+        sparkline: sparkline);
   }
 }
 
-class CryptoPageResponse{
+class CryptoPageResponse {
   final List<CryptoListing> cryptoListing;
 
   CryptoPageResponse({required this.cryptoListing});
-  
-  factory CryptoPageResponse.fromJson(Map<String, dynamic> json){
 
-    final cryptoListing = (json['data']['coins'] as List).map((listingjson) => CryptoListing.fromJson(listingjson)).toList();
+  factory CryptoPageResponse.fromJson(Map<String, dynamic> json) {
+    final cryptoListing = (json['data']['coins'] as List)
+        .map((listingjson) => CryptoListing.fromJson(listingjson))
+        .toList();
 
     return CryptoPageResponse(cryptoListing: cryptoListing);
   }
 }
+
+
+
