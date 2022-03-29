@@ -13,32 +13,32 @@ class CryptoRepository {
     final uri = Uri.http(baseUrl, '/v2/coins');
 
     final response = await http.get(uri, headers: {
-      "x-access-token": "coinranking2aa5a669d3dd00d08906ceca1120bdc28a28c040c27acaa5",
+      "x-access-token":
+          "coinranking2aa5a669d3dd00d08906ceca1120bdc28a28c040c27acaa5",
     });
 
     final json = jsonDecode(response.body);
 
     log(response.body);
-  
-    return CryptoPageResponse.fromJson(json);
 
+    return CryptoPageResponse.fromJson(json);
   }
 
-  Future<CoinResponse> getCryptoCoinPage({required String uuid}) async {
-    
-    final uri = Uri.http(baseUrl, '/v2/coin/$uuid' );
+  Future<CoinResponse> getCryptoCoinPage(
+      {required String uuid, required var time}) async {
+    final query = {'timePeriod': '$time'};
+    final uri = Uri.http(baseUrl, '/v2/coin/$uuid', query);
 
     final response = await http.get(uri, headers: {
-      "x-access-token": "coinranking2aa5a669d3dd00d08906ceca1120bdc28a28c040c27acaa5",
+      "x-access-token":
+          "coinranking2aa5a669d3dd00d08906ceca1120bdc28a28c040c27acaa5",
     });
 
     final json = jsonDecode(response.body);
 
     log(response.body);
 
-    
     return CoinResponse.fromJson(json);
-
   }
 }
 

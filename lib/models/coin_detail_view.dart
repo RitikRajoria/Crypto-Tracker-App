@@ -1,305 +1,241 @@
-
-
+import 'dart:ffi';
 
 class CoinResponse {
+  final String status;
 
- final String status;
+  final Data data;
 
- final Data data;
+  CoinResponse({required this.status, required this.data});
 
+  factory CoinResponse.fromJson(Map<String, dynamic> json) {
+    final status = json['status'];
 
+    final data = Data.fromJson(json['data']);
 
- CoinResponse({required this.status,required this.data});
-
-
-
-factory CoinResponse.fromJson(Map<String, dynamic> json) {
-
-  final status = json['status'];
-
-  final data = Data.fromJson(json['data']) ;
-  
-  return CoinResponse(status: status, data: data); 
- }
-
-
-
- Map<String, dynamic> toJson() {
-
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-
-  data['status'] = this.status;
-
-  if (this.data != null) {
-
-   data['data'] = this.data.toJson();
-
+    return CoinResponse(status: status, data: data);
   }
 
-  return data;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
 
- }
+    data['status'] = this.status;
 
+    if (this.data != null) {
+      data['data'] = this.data.toJson();
+    }
+
+    return data;
+  }
 }
-
-
 
 class Data {
+  Coin coin;
 
- Coin coin;
+  Data({required this.coin});
 
+  factory Data.fromJson(Map<String, dynamic> json) {
+    final coin = json['coin'] != null ? new Coin.fromJson(json['coin']) : null;
 
-
- Data({required this.coin});
-
-
-
- factory Data.fromJson(Map<String, dynamic> json) {
-
-  final coin = json['coin'] != null ? new Coin.fromJson(json['coin']) : null;
-
-  return Data(coin: coin!);
- }
-
-
-
- Map<String, dynamic> toJson() {
-
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-
-  if (this.coin != null) {
-
-   data['coin'] = this.coin.toJson();
-
+    return Data(coin: coin!);
   }
 
-  return data;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
 
- }
+    if (this.coin != null) {
+      data['coin'] = this.coin.toJson();
+    }
 
+    return data;
+  }
 }
-
-
 
 class Coin {
+  String uuid;
 
- String uuid;
+  String symbol;
 
- String symbol;
+  String name;
 
- String name;
+  String description;
 
- String description;
+  String iconUrl;
 
- String color;
+  String s24hVolume;
 
- String iconUrl;
+  String marketCap;
 
- String s24hVolume;
+  String price;
 
- String marketCap;
+  String btcPrice;
 
- String price;
+  int priceAt;
 
- String btcPrice;
+  String change;
 
- int priceAt;
+  int rank;
 
- String change;
+  int numberOfMarkets;
 
- int rank;
+  int numberOfExchanges;
 
- int numberOfMarkets;
+  int listedAt;
 
- int numberOfExchanges;
+  List<String> sparkline;
 
- int listedAt;
+  AllTimeHigh allTimeHigh;
 
- List<String> sparkline;
+  String coinrankingUrl;
 
- AllTimeHigh allTimeHigh;
-
- String coinrankingUrl;
-
-
-
- Coin(
-
-   {required this.uuid,
-
-   required this.symbol,
-
-   required this.name,
-
-   required this.description,
-
-   required this.color,
-
-   required this.iconUrl,
-
-   required this.s24hVolume,
-
-   required this.marketCap,
-
-   required this.price,
-
-   required this.btcPrice,
-
-   required this.priceAt,
-
-   
-  
+  Coin(
+      {required this.uuid,
+      required this.symbol,
+      required this.name,
+      required this.description,
+      required this.iconUrl,
+      required this.s24hVolume,
+      required this.marketCap,
+      required this.price,
+      required this.btcPrice,
+      required this.priceAt,
       required this.change,
+      required this.rank,
+      required this.numberOfMarkets,
+      required this.numberOfExchanges,
+      required this.listedAt,
+      required this.sparkline,
+      required this.allTimeHigh,
+      required this.coinrankingUrl});
 
-   required this.rank,
+  factory Coin.fromJson(Map<String, dynamic> json) {
+    final uuid = json['uuid'];
 
-   required this.numberOfMarkets,
+    final symbol = json['symbol'];
 
-   required this.numberOfExchanges,
+    final name = json['name'];
 
-   required this.listedAt,
+    final description = json['description'];
 
-   required this.sparkline,
+    final color = json['color'];
 
-   required this.allTimeHigh,
+    final iconUrl = json['iconUrl'];
 
-   required this.coinrankingUrl});
+    final s24hVolume = json['24hVolume'];
 
+    final marketCap = json['marketCap'];
 
+    final price = json['price'];
 
- factory Coin.fromJson(Map<String, dynamic> json) {
+    final btcPrice = json['btcPrice'];
 
-  final uuid = json['uuid'];
+    final priceAt = json['priceAt'];
 
-  final symbol = json['symbol'];
+    final change = json['change'];
 
-  final name = json['name'];
+    final rank = json['rank'];
 
-  final description = json['description'];
+    final numberOfMarkets = json['numberOfMarkets'];
 
-  final color = json['color'];
+    final numberOfExchanges = json['numberOfExchanges'];
 
-  final iconUrl = json['iconUrl'];
+    final listedAt = json['listedAt'];
 
-  final s24hVolume = json['24hVolume'];
+    final sparkline = json['sparkline'].cast<String>();
 
-  final marketCap = json['marketCap'];
+    final allTimeHigh = json['allTimeHigh'] != null
+        ? new AllTimeHigh.fromJson(json['allTimeHigh'])
+        : null;
 
-  final price = json['price'];
+    final coinrankingUrl = json['coinrankingUrl'];
 
-  final btcPrice = json['btcPrice'];
-
-  final priceAt = json['priceAt'];
-
-  final change = json['change'];
-
-  final rank = json['rank'];
-
-  final numberOfMarkets = json['numberOfMarkets'];
-
-  final numberOfExchanges = json['numberOfExchanges'];
-
-  final listedAt = json['listedAt'];
-
-  final sparkline = json['sparkline'].cast<String>();
-
- final allTimeHigh = json['allTimeHigh'] != null ? new AllTimeHigh.fromJson(json['allTimeHigh']) : null;
-
-  final coinrankingUrl = json['coinrankingUrl'];
-
-
-  return Coin(uuid: uuid, symbol: symbol, name: name, description: description, color: color, iconUrl: iconUrl, s24hVolume: s24hVolume, marketCap: marketCap, price: price, btcPrice: btcPrice, priceAt: priceAt, change: change, rank: rank, numberOfMarkets: numberOfMarkets, numberOfExchanges: numberOfExchanges, listedAt: listedAt, sparkline: sparkline, allTimeHigh: allTimeHigh!, coinrankingUrl: coinrankingUrl);
- }
-
-
-
- Map<String, dynamic> toJson() {
-
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-
-  data['uuid'] = this.uuid;
-
-  data['symbol'] = this.symbol;
-
-  data['name'] = this.name;
-
-  data['description'] = this.description;
-
-  data['color'] = this.color;
-
-  data['iconUrl'] = this.iconUrl;
-
-  data['24hVolume'] = this.s24hVolume;
-
-  data['marketCap'] = this.marketCap;
-
-  data['price'] = this.price;
-
-  data['btcPrice'] = this.btcPrice;
-
-  data['priceAt'] = this.priceAt;
-
-  data['change'] = this.change;
-
-  data['rank'] = this.rank;
-
-  data['numberOfMarkets'] = this.numberOfMarkets;
-
-  data['numberOfExchanges'] = this.numberOfExchanges;
-
-  data['listedAt'] = this.listedAt;
-
-  data['sparkline'] = this.sparkline;
-
-  if (this.allTimeHigh != null) {
-
-   data['allTimeHigh'] = this.allTimeHigh.toJson();
-
+    return Coin(
+        uuid: uuid,
+        symbol: symbol,
+        name: name,
+        description: description,
+        iconUrl: iconUrl,
+        s24hVolume: s24hVolume,
+        marketCap: marketCap,
+        price: price,
+        btcPrice: btcPrice,
+        priceAt: priceAt,
+        change: change,
+        rank: rank,
+        numberOfMarkets: numberOfMarkets,
+        numberOfExchanges: numberOfExchanges,
+        listedAt: listedAt,
+        sparkline: sparkline,
+        allTimeHigh: allTimeHigh!,
+        coinrankingUrl: coinrankingUrl);
   }
 
-  data['coinrankingUrl'] = this.coinrankingUrl;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
 
-  return data;
+    data['uuid'] = this.uuid;
 
- }
+    data['symbol'] = this.symbol;
 
+    data['name'] = this.name;
+
+    data['description'] = this.description;
+
+    data['iconUrl'] = this.iconUrl;
+
+    data['24hVolume'] = this.s24hVolume;
+
+    data['marketCap'] = this.marketCap;
+
+    data['price'] = this.price;
+
+    data['btcPrice'] = this.btcPrice;
+
+    data['priceAt'] = this.priceAt;
+
+    data['change'] = this.change;
+
+    data['rank'] = this.rank;
+
+    data['numberOfMarkets'] = this.numberOfMarkets;
+
+    data['numberOfExchanges'] = this.numberOfExchanges;
+
+    data['listedAt'] = this.listedAt;
+
+    data['sparkline'] = this.sparkline;
+
+    if (this.allTimeHigh != null) {
+      data['allTimeHigh'] = this.allTimeHigh.toJson();
+    }
+
+    data['coinrankingUrl'] = this.coinrankingUrl;
+
+    return data;
+  }
 }
 
-
-
 class AllTimeHigh {
+  String price;
 
- String price;
+  int timestamp;
 
- int timestamp;
+  AllTimeHigh({required this.price, required this.timestamp});
 
+  factory AllTimeHigh.fromJson(Map<String, dynamic> json) {
+    final price = json['price'];
 
+    final timestamp = json['timestamp'];
 
- AllTimeHigh({required this.price,required this.timestamp});
+    return AllTimeHigh(price: price, timestamp: timestamp);
+  }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
 
+    data['price'] = this.price;
 
- factory AllTimeHigh.fromJson(Map<String, dynamic> json) {
+    data['timestamp'] = this.timestamp;
 
-  final price = json['price'];
-
-  final timestamp = json['timestamp'];
-
-  return AllTimeHigh(price: price, timestamp: timestamp);
- }
-
-
-
- Map<String, dynamic> toJson() {
-
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-
-  data['price'] = this.price;
-
-  data['timestamp'] = this.timestamp;
-
-  return data;
-
- }
-
+    return data;
+  }
 }
