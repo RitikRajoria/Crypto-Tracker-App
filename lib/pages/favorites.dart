@@ -388,13 +388,6 @@ class _FavoritesState extends State<Favorites> {
                                               ),
                                             ),
                                           ),
-
-                                          //if here
-
-                                          // if (snapshot.data!.length >= snapshot.data!.length)
-                                          //   SizedBox(
-                                          //     height: 160,
-                                          //   ),
                                         ],
                                       ),
                                     );
@@ -413,158 +406,273 @@ class _FavoritesState extends State<Favorites> {
                           }))
                   : Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: GridView.builder(
-                          shrinkWrap: true,
-                          primary: false,
-                          gridDelegate:
-                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 230,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10),
-                          itemCount: 12,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                    sigmaX: 30.0, sigmaY: 30.0),
-                                child: Container(
-                                  height: (size.width + 30) * 0.50,
-                                  width: (size.width - 10) * 0.46,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.greenAccent.shade700,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Visibility(
-                                            visible: editOn,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10,
-                                                  bottom: 0,
-                                                  top: 10),
+                      child: FutureBuilder(
+                          future: loadDataFromDB(),
+                          builder: (context,
+                              AsyncSnapshot<List<FavsModel>> snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              return snapshot.data!.length == 0
+                                  ? Container(
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 250,
+                                            ),
+                                            Text(
+                                              'No Favorite Coins Yet!',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18),
+                                            ),
+                                            SizedBox(
+                                              height: 12,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Trending()));
+                                              },
                                               child: Container(
-                                                height: 20,
-                                                width: 20,
+                                                height: 70,
+                                                width: 70,
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey
-                                                      .withOpacity(0.2),
+                                                      .withOpacity(0.4),
                                                   borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                      width: 0.2,
-                                                      color: Colors.white),
+                                                      BorderRadius.circular(13),
                                                 ),
-                                                child: IconButton(
-                                                  icon: Icon(
-                                                    Icons.close,
-                                                    size: 14,
-                                                    color: Colors.white70,
-                                                  ),
-                                                  onPressed: () {},
-                                                  padding: EdgeInsets.all(0),
-                                                ),
+                                                child: Icon(Icons.add_rounded,
+                                                    color: Colors.white
+                                                        .withOpacity(0.2),
+                                                    size: 40),
                                               ),
                                             ),
-                                          ),
-                                          Visibility(
-                                            visible: !editOn,
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : GridView.builder(
+                                      shrinkWrap: true,
+                                      primary: false,
+                                      gridDelegate:
+                                          SliverGridDelegateWithMaxCrossAxisExtent(
+                                              maxCrossAxisExtent: 230,
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 10),
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (BuildContext ctx, index) {
+                                        return ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 30.0, sigmaY: 30.0),
                                             child: Container(
-                                                height: 30, width: 30),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 15, top: 0, right: 5),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              height: 45,
-                                              width: 45,
+                                              height: (size.width + 30) * 0.50,
+                                              width: (size.width - 10) * 0.46,
                                               decoration: BoxDecoration(
-                                                color: Colors.grey,
+                                                color: Colors.grey
+                                                    .withOpacity(0.2),
                                                 borderRadius:
-                                                    BorderRadius.circular(24),
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Colors.white
+                                                      .withOpacity(0.3),
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(height: 3),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "ETH",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                    color: textWhite,
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Visibility(
+                                                        visible: editOn,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 10,
+                                                                  bottom: 0,
+                                                                  top: 10),
+                                                          child: Container(
+                                                            height: 20,
+                                                            width: 20,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.2),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                              border: Border.all(
+                                                                  width: 0.2,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                            child: IconButton(
+                                                              icon: Icon(
+                                                                Icons.close,
+                                                                size: 14,
+                                                                color: Colors
+                                                                    .white70,
+                                                              ),
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  dbHelper!.delete(
+                                                                      snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .uuid);
+                                                                  listFromdb =
+                                                                      dbHelper!
+                                                                          .getFavsList();
+                                                                  snapshot.data!
+                                                                      .remove(snapshot
+                                                                              .data![
+                                                                          index]);
+                                                                });
+                                                              },
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(0),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Visibility(
+                                                        visible: !editOn,
+                                                        child: Container(
+                                                            height: 30,
+                                                            width: 30),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                                Text(
-                                                  "Ethereum",
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 15,
-                                            top: 5,
-                                            right: 5,
-                                            bottom: 8),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          // mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "\$373,98",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: textWhite,
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15,
+                                                            top: 0,
+                                                            right: 5),
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          height: 45,
+                                                          width: 45,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.grey,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        24),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 3),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              "ETH",
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 16,
+                                                                color:
+                                                                    textWhite,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              "Ethereum",
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      500]),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15,
+                                                            top: 5,
+                                                            right: 5,
+                                                            bottom: 8),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      // mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          "\$373,98",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: textWhite,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 3),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              " +4,33%",
+                                                              style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                          .greenAccent[
+                                                                      700]),
+                                                            ),
+                                                            Icon(
+                                                                Icons
+                                                                    .arrow_upward,
+                                                                size: 16,
+                                                                color: Colors
+                                                                        .greenAccent[
+                                                                    700]),
+                                                          ],
+                                                        ), //change in currency,s value text
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            const SizedBox(height: 3),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  " +4,33%",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors
-                                                          .greenAccent[700]),
-                                                ),
-                                                Icon(Icons.arrow_upward,
-                                                    size: 16,
-                                                    color: Colors
-                                                        .greenAccent[700]),
-                                              ],
-                                            ), //change in currency,s value text
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                          ),
+                                        );
+                                      });
+                            } else {
+                              return Center(
+                                child: Container(
+                                  height: 200,
+                                  width: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white),
                                   ),
                                 ),
-                              ),
-                            );
+                              );
+                            }
                           }),
                     ),
             ],
