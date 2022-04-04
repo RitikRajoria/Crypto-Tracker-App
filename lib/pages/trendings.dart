@@ -30,6 +30,7 @@ class _TrendingState extends State<Trending> {
 
   CryptoPageResponse? _cryptoData;
   bool viewType = true; //default value is false, false means grid view
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

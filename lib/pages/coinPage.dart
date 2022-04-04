@@ -8,6 +8,9 @@ import 'package:crypto_app_ui/themes/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../database/fav_handler.dart';
+import '../models/favs.dart';
+
 class CoinPage extends StatefulWidget {
   final String coinId;
   final String coinName;
@@ -20,10 +23,32 @@ class CoinPage extends StatefulWidget {
 }
 
 class _CoinPageState extends State<CoinPage> {
+  FavDBHelper? dbHelper;
+
+  late Future<List<FavsModel>> favsList;
+
+  bool favBtn = false;
+
   @override
   void initState() {
-    super.initState();
     getCoinData();
+    dbHelper = FavDBHelper();
+    loadData();
+
+    entryCheck();
+    super.initState();
+  }
+
+  Future<List<FavsModel>> loadData() async {
+    favsList = dbHelper!.getFavsList();
+    return favsList;
+  }
+
+  Future<bool> entryCheck() async {
+    var uuid = widget.coinId;
+    var check = dbHelper!.uuidExists(uuid);
+    favBtn = await check;
+    return check;
   }
 
   bool isLoading = false;
@@ -60,11 +85,10 @@ class _CoinPageState extends State<CoinPage> {
     TabItemModel(isSelected: false, itemText: 'All'),
   ];
 
-  bool favBtn = false;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: bgDark,
       extendBodyBehindAppBar: true,
@@ -169,10 +193,10 @@ class _CoinPageState extends State<CoinPage> {
     for (int i = 0; i < sparkline.length; i++) {
       sparklineData.add(double.parse(sparkline[i]));
     }
-    print("All Time High");
-    print(allTimeHigh);
-    print("SPARKLINE DATA");
-    print(sparklineData);
+    // print("All Time High");
+    // print(allTimeHigh);
+    // print("SPARKLINE DATA");
+    // print(sparklineData);
 
     return Column(
       children: [
@@ -295,53 +319,13 @@ class _CoinPageState extends State<CoinPage> {
         const SizedBox(height: 20),
         Container(
           height: 220,
-          width: (size.width),
+          width: size.width,
           // color: Colors.grey,
           child: LineChartWidget(
             sparkData: sparklineData,
             allTimeHigh: allTimeHigh,
           ),
         ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     Text("MON",
-        //         style: TextStyle(
-        //             color: Colors.grey,
-        //             fontSize: 14,
-        //             fontWeight: FontWeight.w400)),
-        //     Text("TUE",
-        //         style: TextStyle(
-        //             color: Colors.grey,
-        //             fontSize: 14,
-        //             fontWeight: FontWeight.w400)),
-        //     Text("WED",
-        //         style: TextStyle(
-        //             color: Colors.grey,
-        //             fontSize: 14,
-        //             fontWeight: FontWeight.w400)),
-        //     Text("THU",
-        //         style: TextStyle(
-        //             color: Colors.grey,
-        //             fontSize: 14,
-        //             fontWeight: FontWeight.w400)),
-        //     Text("FRI",
-        //         style: TextStyle(
-        //             color: Colors.grey,
-        //             fontSize: 14,
-        //             fontWeight: FontWeight.w400)),
-        //     Text("SAT",
-        //         style: TextStyle(
-        //             color: Colors.grey,
-        //             fontSize: 14,
-        //             fontWeight: FontWeight.w400)),
-        //     Text("SUN",
-        //         style: TextStyle(
-        //             color: Colors.grey,
-        //             fontSize: 14,
-        //             fontWeight: FontWeight.w400)),
-        //   ],
-        // ),
         const SizedBox(height: 24),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -352,18 +336,40 @@ class _CoinPageState extends State<CoinPage> {
           ),
           onPressed: () {
             setState(() {
+              if (favBtn == false) {
+                dbHelper!.insert(FavsModel(uuid: widget.coinId)).then((value) {
+                  print("Added to Favorites ${widget.coinId}");
+                  setState(() {
+                    favsList = dbHelper!.getFavsList();
+                  });
+                }).onError((error, stackTrace) {
+                  print(error.toString());
+                });
+              } else if (favBtn == true) {
+                dbHelper!.delete(widget.coinId);
+                favsList = dbHelper!.getFavsList();
+                print("deleted ${widget.coinId}");
+              }
+
+              print("button pressed");
               favBtn = !favBtn;
+              print(favBtn);
             });
           },
-          child: Container(
-            height: 50,
-            width: (size.width),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(favBtn ? Icons.star : Icons.star_border, size: 30),
-              ],
-            ),
+          child: FutureBuilder(
+            builder: ((context, snapshot) {
+              return Container(
+                height: 50,
+                width: (size.width),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(favBtn ? Icons.star : Icons.star_border, size: 30),
+                  ],
+                ),
+              );
+            }),
+            future: entryCheck(),
           ),
         ),
       ],
@@ -448,8 +454,8 @@ class LineChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("SPARK DATA");
-    print(sparkData);
+    // print("SPARK DATA");
+    // print(sparkData);
 
     return LineChart(
       LineChartData(
