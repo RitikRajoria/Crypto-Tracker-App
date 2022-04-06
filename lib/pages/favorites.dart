@@ -628,16 +628,21 @@ class _FavoritesState extends State<Favorites> {
                                                         onPressed: () {
                                                           setState(() {
                                                             dbHelper!.delete(
-                                                                favsList[index]
+                                                                snapshot
+                                                                    .data[index]
                                                                     .uuid);
+                                                            //
                                                             print(
                                                                 "Deleted item ${favsList[index].name}");
+                                                            //
                                                             listFromdb = dbHelper!
                                                                 .getFavsList();
-                                                            snapshot.data!
+                                                            //
+                                                            snapshot.data
                                                                 .remove(snapshot
-                                                                        .data![
+                                                                        .data[
                                                                     index]);
+                                                            //
                                                             favsList.removeWhere(
                                                                 (element) =>
                                                                     element
