@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:ui';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_app_ui/database/fav_handler.dart';
 import 'package:crypto_app_ui/pages/home.dart';
 import 'package:crypto_app_ui/pages/trendings.dart';
+import 'package:crypto_app_ui/pages/coinPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../models/crypto_page_response.dart';
 import '../models/crypto_response.dart';
 import '../models/favs.dart';
@@ -25,37 +26,44 @@ class _FavoritesState extends State<Favorites> {
   @override
   void initState() {
     dbHelper = FavDBHelper();
-    getFavLists();
+    getFavItemList();
     super.initState();
+    setState(() {});
   }
-
-  // Future getNetworkData() async {
-  //   isLoading = true;
-  //   _cryptoData = await CryptoRepository().getCryptoPage();
-  //   isLoading = false;
-  //   setState(() {});
-  // }
-
-  // CryptoPageResponse? _cryptoData;
 
   Future<List<FavsModel>> loadDataFromDB() async {
     listFromdb = dbHelper!.getFavsList();
+    print("database loaded");
     return listFromdb;
   }
 
+  int counter = 0;
+  int counter1 = 0;
   bool checkComparison = false;
 
-  Future getFavLists() async {
+  Future getFavItemList() async {
     CryptoPageResponse? _cryptoData = await CryptoRepository().getCryptoPage();
     List<FavsModel> listFromDB = await dbHelper!.getFavsList();
 
-    for (int i = 0; i <= _cryptoData.cryptoListing.length; i++) {
-      favsList.where(
-          (element) => element.uuid == _cryptoData.cryptoListing[i].uuid);
+    print("fav items list called");
+    for (int i = 0; i < _cryptoData.cryptoListing.length; i++) {
+      listFromDB.forEach((element) {
+        if (element.uuid == _cryptoData.cryptoListing[i].uuid) {
+          favsList.add(FavItemModel(
+              uuid: _cryptoData.cryptoListing[i].uuid,
+              symbol: _cryptoData.cryptoListing[i].symbol,
+              name: _cryptoData.cryptoListing[i].name,
+              iconUrl: _cryptoData.cryptoListing[i].iconUrl,
+              change: _cryptoData.cryptoListing[i].change,
+              price: _cryptoData.cryptoListing[i].price));
+          // print(favsList[i].uuid);
+        }
+      });
     }
   }
 
   bool isLoading = false;
+  bool wait = false;
 
   bool editOn = false;
   bool viewType = true; //default value is true, true means grid view
@@ -147,7 +155,9 @@ class _FavoritesState extends State<Favorites> {
                           future: loadDataFromDB(),
                           builder: (context,
                               AsyncSnapshot<List<FavsModel>> snapshot) {
-                            if (snapshot.hasData && snapshot.data != null) {
+                            if (wait == false &&
+                                snapshot.hasData &&
+                                snapshot.data != null) {
                               return snapshot.data!.length == 0
                                   ? Container(
                                       child: Center(
@@ -171,7 +181,8 @@ class _FavoritesState extends State<Favorites> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            Trending()));
+                                                            Trending())).then(
+                                                    (value) => onGoback());
                                               },
                                               child: Container(
                                                 height: 70,
@@ -195,202 +206,308 @@ class _FavoritesState extends State<Favorites> {
                                   : ListView.builder(
                                       padding: EdgeInsets.only(bottom: 157),
                                       itemCount: snapshot.data?.length,
-                                      itemBuilder: (context, index) => Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, right: 10, top: 8),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 60.0, sigmaY: 0),
-                                                child: Container(
-                                                  padding: EdgeInsets.all(8),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    border: Border.all(
-                                                        width: 0.2,
-                                                        color: Colors.white
-                                                            .withOpacity(0.5)),
-                                                    color: Colors.grey
-                                                        .withOpacity(0.2),
-                                                  ),
-                                                  height: 80,
-                                                  width:
-                                                      (size.width - 10) * 0.95,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
+                                      itemBuilder: (context, index) {
+                                        String price =
+                                            double.parse(favsList[index].price)
+                                                .toStringAsFixed(2);
+                                        String url = favsList[index].iconUrl;
+                                        String logo =
+                                            url.replaceAll(".svg", ".png");
+                                        String change = favsList[index].change;
+                                        return Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CoinPage(
+                                                            coinId:
+                                                                favsList[index]
+                                                                    .uuid,
+                                                            coinName:
+                                                                favsList[index]
+                                                                    .name,
+                                                          )),
+                                                ).then((value) => onGoback());
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 10,
+                                                    top: 8),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  child: BackdropFilter(
+                                                    filter: ImageFilter.blur(
+                                                        sigmaX: 60.0,
+                                                        sigmaY: 0),
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.all(8),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        border: Border.all(
+                                                            width: 0.2,
+                                                            color: Colors.white
+                                                                .withOpacity(
+                                                                    0.5)),
+                                                        color: Colors.grey
+                                                            .withOpacity(0.2),
+                                                      ),
+                                                      height: 80,
+                                                      width: (size.width - 10) *
+                                                          0.95,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         children: [
-                                                          Container(
-                                                            height: 60,
-                                                            width: 60,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color:
-                                                                  Colors.grey,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          24),
-                                                            ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                height: 60,
+                                                                width: 60,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.2),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              24),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          9.5),
+                                                                  child:
+                                                                      CachedNetworkImage(
+                                                                    imageUrl:
+                                                                        logo,
+                                                                    placeholder:
+                                                                        (context,
+                                                                                url) =>
+                                                                            const CircularProgressIndicator(),
+                                                                    errorWidget: (context,
+                                                                            url,
+                                                                            error) =>
+                                                                        const Icon(
+                                                                            Icons
+                                                                                .error,
+                                                                            color:
+                                                                                Colors.redAccent),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 10),
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Flexible(
+                                                                    child:
+                                                                        Container(
+                                                                      width: (size.width -
+                                                                              40) *
+                                                                          0.4,
+                                                                      child:
+                                                                          Text(
+                                                                        favsList[index]
+                                                                            .name,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              17,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          color:
+                                                                              textWhite,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          4),
+                                                                  Text(
+                                                                    favsList[
+                                                                            index]
+                                                                        .symbol,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            15,
+                                                                        color: Colors
+                                                                            .grey),
+                                                                  ), //extra alt text for coin
+                                                                ],
+                                                              ),
+                                                            ],
                                                           ),
-                                                          const SizedBox(
-                                                              width: 10),
                                                           Column(
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
-                                                                    .start,
+                                                                    .end,
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .center,
                                                             children: [
-                                                              Text(
-                                                                snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .uuid
-                                                                    .toString(),
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color:
-                                                                      textWhite,
+                                                              Flexible(
+                                                                child: Text(
+                                                                  "\$${price}",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    letterSpacing:
+                                                                        0.8,
+                                                                    color:
+                                                                        textWhite,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                              Text(
-                                                                "BNB",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    color: Colors
-                                                                        .grey),
-                                                              ), //extra alt text for coin
+                                                              const SizedBox(
+                                                                  height: 3),
+                                                              ((change)[0] ==
+                                                                      "-")
+                                                                  ? Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          "- " +
+                                                                              change.replaceAll("-", "") +
+                                                                              "%",
+                                                                          style: TextStyle(
+                                                                              fontSize: 15,
+                                                                              color: Colors.redAccent[700]),
+                                                                        ),
+                                                                        Icon(
+                                                                            Icons
+                                                                                .arrow_downward,
+                                                                            size:
+                                                                                15,
+                                                                            color:
+                                                                                Colors.redAccent[700]),
+                                                                      ],
+                                                                    )
+                                                                  : //change in currency,s value text
+                                                                  Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          "+ ${change}" +
+                                                                              "%",
+                                                                          style: TextStyle(
+                                                                              fontSize: 15,
+                                                                              color: Colors.greenAccent[700]),
+                                                                        ),
+                                                                        Icon(
+                                                                            Icons
+                                                                                .arrow_upward,
+                                                                            size:
+                                                                                15,
+                                                                            color:
+                                                                                Colors.greenAccent[700]),
+                                                                      ],
+                                                                    ), //change in currency,s value text
                                                             ],
                                                           ),
-                                                        ],
-                                                      ),
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            "\$373,98",
-                                                            style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: textWhite,
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              height: 3),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                "+4,33%",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16,
+                                                          if (editOn)
+                                                            Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Container(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              0),
+                                                                  height: 30,
+                                                                  width: 30,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(5),
+                                                                    border: Border.all(
+                                                                        width:
+                                                                            0.3,
+                                                                        color: Colors
+                                                                            .white
+                                                                            .withOpacity(0.5)),
                                                                     color: Colors
-                                                                            .greenAccent[
-                                                                        700]),
-                                                              ),
-                                                              Icon(
-                                                                  Icons
-                                                                      .arrow_upward,
-                                                                  size: 16,
-                                                                  color: Colors
-                                                                          .greenAccent[
-                                                                      700]),
-                                                            ],
-                                                          ), //change in currency,s value text
-                                                        ],
-                                                      ),
-                                                      if (editOn)
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Container(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(0),
-                                                              height: 30,
-                                                              width: 30,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                border: Border.all(
-                                                                    width: 0.3,
-                                                                    color: Colors
-                                                                        .white
+                                                                        .grey
                                                                         .withOpacity(
-                                                                            0.5)),
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.3),
-                                                              ),
-                                                              child: IconButton(
-                                                                icon: Icon(
-                                                                    Icons.close,
-                                                                    size: 14,
-                                                                    color: Colors
-                                                                        .white70),
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    dbHelper!.delete(snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .uuid);
-                                                                    listFromdb =
+                                                                            0.3),
+                                                                  ),
+                                                                  child:
+                                                                      IconButton(
+                                                                    icon: Icon(
+                                                                        Icons
+                                                                            .close,
+                                                                        size:
+                                                                            14,
+                                                                        color: Colors
+                                                                            .white70),
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                          () {
                                                                         dbHelper!
-                                                                            .getFavsList();
-                                                                    snapshot
-                                                                        .data!
-                                                                        .remove(
-                                                                            snapshot.data![index]);
-                                                                  });
-                                                                },
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(),
-                                                              ),
+                                                                            .delete(favsList[index].uuid);
+                                                                        print(
+                                                                            "Deleted item ${favsList[index].name}");
+                                                                        listFromdb =
+                                                                            dbHelper!.getFavsList();
+                                                                        snapshot
+                                                                            .data!
+                                                                            .remove(snapshot.data![index]);
+                                                                        favsList.removeWhere((element) =>
+                                                                            element.uuid ==
+                                                                            favsList[index].uuid);
+
+                                                                        getFavItemList();
+                                                                      });
+                                                                    },
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .only(),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
-                                                    ],
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
+                                          ],
+                                        );
+                                      });
                             } else {
                               return Center(
                                 child: Container(
@@ -434,7 +551,8 @@ class _FavoritesState extends State<Favorites> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            Trending()));
+                                                            Trending())).then(
+                                                    (value) => onGoback());
                                               },
                                               child: Container(
                                                 height: 70,
@@ -465,197 +583,285 @@ class _FavoritesState extends State<Favorites> {
                                               mainAxisSpacing: 10),
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (BuildContext ctx, index) {
-                                        return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 30.0, sigmaY: 30.0),
-                                            child: Container(
-                                              height: (size.width + 30) * 0.50,
-                                              width: (size.width - 10) * 0.46,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey
-                                                    .withOpacity(0.2),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                  width: 1,
-                                                  color: Colors.white
-                                                      .withOpacity(0.3),
+                                        String price =
+                                            double.parse(favsList[index].price)
+                                                .toStringAsFixed(3);
+                                        String url = favsList[index].iconUrl;
+                                        String logo =
+                                            url.replaceAll(".svg", ".png");
+                                        String change = favsList[index].change;
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CoinPage(
+                                                        coinId: favsList[index]
+                                                            .uuid,
+                                                        coinName:
+                                                            favsList[index]
+                                                                .name,
+                                                      )),
+                                            );
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: BackdropFilter(
+                                              filter: ImageFilter.blur(
+                                                  sigmaX: 30.0, sigmaY: 30.0),
+                                              child: Container(
+                                                height:
+                                                    (size.width + 30) * 0.50,
+                                                width: (size.width - 10) * 0.46,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                    width: 1,
+                                                    color: Colors.white
+                                                        .withOpacity(0.3),
+                                                  ),
                                                 ),
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Visibility(
-                                                        visible: editOn,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  right: 10,
-                                                                  bottom: 0,
-                                                                  top: 10),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Visibility(
+                                                          visible: editOn,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 10,
+                                                                    bottom: 0,
+                                                                    top: 10),
+                                                            child: Container(
+                                                              height: 20,
+                                                              width: 20,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.2),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                                border: Border.all(
+                                                                    width: 0.2,
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              child: IconButton(
+                                                                icon: Icon(
+                                                                  Icons.close,
+                                                                  size: 14,
+                                                                  color: Colors
+                                                                      .white70,
+                                                                ),
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    dbHelper!.delete(
+                                                                        favsList[index]
+                                                                            .uuid);
+                                                                    print(
+                                                                        "Deleted item ${favsList[index].name}");
+                                                                    listFromdb =
+                                                                        dbHelper!
+                                                                            .getFavsList();
+                                                                    snapshot
+                                                                        .data!
+                                                                        .remove(
+                                                                            snapshot.data![index]);
+                                                                    favsList.removeWhere((element) =>
+                                                                        element
+                                                                            .uuid ==
+                                                                        favsList[index]
+                                                                            .uuid);
+                                                                    // getFavItemList();
+                                                                  });
+                                                                },
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(0),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Visibility(
+                                                          visible: !editOn,
                                                           child: Container(
-                                                            height: 20,
-                                                            width: 20,
+                                                              height: 30,
+                                                              width: 30),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15,
+                                                              top: 0,
+                                                              right: 5),
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            height: 55,
+                                                            width: 55,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: Colors.grey
+                                                              color: Colors
+                                                                  .black
                                                                   .withOpacity(
                                                                       0.2),
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
-                                                                          5),
-                                                              border: Border.all(
-                                                                  width: 0.2,
-                                                                  color: Colors
-                                                                      .white),
+                                                                          24),
                                                             ),
-                                                            child: IconButton(
-                                                              icon: Icon(
-                                                                Icons.close,
-                                                                size: 14,
-                                                                color: Colors
-                                                                    .white70,
-                                                              ),
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  dbHelper!.delete(
-                                                                      snapshot
-                                                                          .data![
-                                                                              index]
-                                                                          .uuid);
-                                                                  listFromdb =
-                                                                      dbHelper!
-                                                                          .getFavsList();
-                                                                  snapshot.data!
-                                                                      .remove(snapshot
-                                                                              .data![
-                                                                          index]);
-                                                                });
-                                                              },
+                                                            child: Padding(
                                                               padding:
                                                                   EdgeInsets
-                                                                      .all(0),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Visibility(
-                                                        visible: !editOn,
-                                                        child: Container(
-                                                            height: 30,
-                                                            width: 30),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            top: 0,
-                                                            right: 5),
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          height: 45,
-                                                          width: 45,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Colors.grey,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        24),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 3),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              "ETH",
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 16,
-                                                                color:
-                                                                    textWhite,
+                                                                      .all(8.0),
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                imageUrl: logo,
+                                                                placeholder: (context,
+                                                                        url) =>
+                                                                    const CircularProgressIndicator(),
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
+                                                                    const Icon(
+                                                                        Icons
+                                                                            .error,
+                                                                        color: Colors
+                                                                            .redAccent),
                                                               ),
                                                             ),
-                                                            Text(
-                                                              "Ethereum",
-                                                              style: TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      500]),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            top: 5,
-                                                            right: 5,
-                                                            bottom: 8),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          "\$373,98",
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: textWhite,
                                                           ),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 3),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              " +4,33%",
-                                                              style: TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors
-                                                                          .greenAccent[
-                                                                      700]),
-                                                            ),
-                                                            Icon(
-                                                                Icons
-                                                                    .arrow_upward,
-                                                                size: 16,
-                                                                color: Colors
-                                                                        .greenAccent[
-                                                                    700]),
-                                                          ],
-                                                        ), //change in currency,s value text
-                                                      ],
+                                                          const SizedBox(
+                                                              height: 5),
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                favsList[index]
+                                                                    .symbol,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 16,
+                                                                  color:
+                                                                      textWhite,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                favsList[index]
+                                                                    .name,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        500]),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15,
+                                                              top: 5,
+                                                              right: 5,
+                                                              bottom: 8),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        // mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: [
+                                                          Text(
+                                                            "\$${price}",
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: textWhite,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 3),
+                                                          ((change)[0] == "-")
+                                                              ? Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Text(
+                                                                      "- " +
+                                                                          change.replaceAll(
+                                                                              "-",
+                                                                              "") +
+                                                                          "%",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              Colors.redAccent[700]),
+                                                                    ),
+                                                                    Icon(
+                                                                        Icons
+                                                                            .arrow_downward,
+                                                                        size:
+                                                                            16,
+                                                                        color: Colors
+                                                                            .redAccent[700]),
+                                                                  ],
+                                                                )
+                                                              : //change in currency,s value text
+                                                              Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Text(
+                                                                      "+ ${change}" +
+                                                                          "%",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              Colors.greenAccent[700]),
+                                                                    ),
+                                                                    Icon(
+                                                                        Icons
+                                                                            .arrow_upward,
+                                                                        size:
+                                                                            16,
+                                                                        color: Colors
+                                                                            .greenAccent[700]),
+                                                                  ],
+                                                                ), //change in currency,s value text
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -681,5 +887,13 @@ class _FavoritesState extends State<Favorites> {
         ],
       ),
     );
+  }
+
+  onGoback() {
+    editOn = false;
+    setState(() {
+      getFavItemList();
+      loadDataFromDB();
+    });
   }
 }

@@ -338,7 +338,7 @@ class _CoinPageState extends State<CoinPage> {
             setState(() {
               if (favBtn == false) {
                 dbHelper!.insert(FavsModel(uuid: widget.coinId)).then((value) {
-                  print("Added to Favorites ${widget.coinId}");
+                  print("Added to Favorites ${widget.coinName}");
                   setState(() {
                     favsList = dbHelper!.getFavsList();
                   });
@@ -348,7 +348,7 @@ class _CoinPageState extends State<CoinPage> {
               } else if (favBtn == true) {
                 dbHelper!.delete(widget.coinId);
                 favsList = dbHelper!.getFavsList();
-                print("deleted ${widget.coinId}");
+                print("deleted ${widget.coinName}");
               }
 
               print("button pressed");

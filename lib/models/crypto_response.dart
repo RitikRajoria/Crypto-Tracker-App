@@ -19,7 +19,7 @@ class CryptoRepository {
 
     final json = jsonDecode(response.body);
 
-    log(response.body);
+    // log(response.body);
 
     return CryptoPageResponse.fromJson(json);
   }
