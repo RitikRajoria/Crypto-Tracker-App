@@ -182,16 +182,27 @@ class _CoinPageState extends State<CoinPage> {
     String change = _cryptoCoinData!.data.coin.change;
     String url = _cryptoCoinData!.data.coin.iconUrl;
     String logo = url.replaceAll(".svg", ".png");
-    List<String> sparkline = _cryptoCoinData!.data.coin.sparkline;
+    List<String?> sparkline = _cryptoCoinData!.data.coin.sparkline;
 
     var highestPrice = _cryptoCoinData!.data.coin.allTimeHigh.price;
 
     var allTimeHigh = double.parse(highestPrice);
 
-    List<double> sparklineData = [];
+    List<double?> sparklineData = [];
+    print(sparkline.length);
 
     for (int i = 0; i < sparkline.length; i++) {
-      sparklineData.add(double.parse(sparkline[i]));
+      // print(i);
+
+      // print(sparkline[i]);
+      if (sparkline[i] == null) {
+        print("Null data");
+        sparklineData.add(double.parse(sparkline[i - 1]!));
+      } else {
+        sparklineData.add(double.parse(sparkline[i]!));
+      }
+      // sparklineData.add(double.parse(sparkline[i]!));
+      // print(sparklineData[i]);
     }
     // print("All Time High");
     // print(allTimeHigh);
@@ -395,8 +406,6 @@ class _CoinPageState extends State<CoinPage> {
           timePeriod = "30d";
         } else if (index == 3) {
           timePeriod = "1y";
-        } else if (index == 3) {
-          timePeriod = "1y";
         } else if (index == 4) {
           timePeriod = "5y";
         }
@@ -445,7 +454,7 @@ class LineChartWidget extends StatelessWidget {
     Colors.grey.withOpacity(0.4),
   ];
 
-  final List<double> sparkData;
+  final List<double?> sparkData;
   double allTimeHigh;
 
   LineChartWidget(
@@ -467,10 +476,10 @@ class LineChartWidget extends StatelessWidget {
         lineBarsData: [
           LineChartBarData(
             spots: [
-              FlSpot(-10, sparkData[0]),
+              FlSpot(-10, sparkData[0]!),
               for (var i = 0; i < sparkData.length; i++)
-                FlSpot(i + 1, sparkData[i]),
-              FlSpot(35, sparkData[26]),
+                FlSpot(i + 1, sparkData[i]!),
+              FlSpot(35, sparkData[26]!),
             ],
             colors: gradientColor,
             barWidth: 2,
@@ -491,11 +500,11 @@ class LineChartWidget extends StatelessWidget {
     );
   }
 
-  double _maxYvalue(List<double> list) {
+  double _maxYvalue(List<double?> list) {
     double max = 0;
     for (var i = 0; i < list.length; i++) {
-      if (list[i] > max) {
-        max = list[i];
+      if (list[i]! > max) {
+        max = list[i]!;
       }
     }
     return max;

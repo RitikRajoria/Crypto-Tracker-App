@@ -81,7 +81,7 @@ class Coin {
 
   int listedAt;
 
-  List<String> sparkline;
+  List<String?> sparkline;
 
   AllTimeHigh allTimeHigh;
 
@@ -140,7 +140,7 @@ class Coin {
 
     final listedAt = json['listedAt'];
 
-    final sparkline = json['sparkline'].cast<String>();
+    final sparkline = json['sparkline'].cast<String?>();
 
     final allTimeHigh = json['allTimeHigh'] != null
         ? new AllTimeHigh.fromJson(json['allTimeHigh'])
