@@ -22,7 +22,7 @@ class _SearchState extends State<Search> {
     super.initState();
   }
 
-  String totTitle(String input) {
+  String toTitle(String input) {
     final List<String> splitStr = input.split(' ');
     for (int i = 0; i < splitStr.length; i++) {
       splitStr[i] =
@@ -49,13 +49,14 @@ class _SearchState extends State<Search> {
 
     for (int i = 0; i < _cryptoData!.cryptoListing.length; i++) {
       String query = textFieldData.toUpperCase();
-      String query1 = textFieldData;
+      String query1 = toTitle(textFieldData);
 
       if (query == "") {
         print("Empty");
       } else {
         print(query);
-        if (_cryptoData!.cryptoListing[i].symbol.contains(query)) {
+        if (_cryptoData!.cryptoListing[i].symbol.contains(query) ||
+            _cryptoData!.cryptoListing[i].name.contains(query1)) {
           searchList.add(SearchModel(
               uuid: _cryptoData!.cryptoListing[i].uuid,
               symbol: _cryptoData!.cryptoListing[i].symbol,
