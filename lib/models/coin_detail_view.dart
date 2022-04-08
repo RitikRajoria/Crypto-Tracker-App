@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class CoinResponse {
   final String status;
 

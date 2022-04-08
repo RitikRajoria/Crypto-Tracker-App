@@ -1,8 +1,13 @@
+import 'dart:developer';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_app_ui/models/crypto_response.dart';
+import 'package:crypto_app_ui/pages/coinPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../models/crypto_page_response.dart';
+import '../models/searchModel.dart';
 import '../themes/colors.dart';
 
 class Search extends StatefulWidget {
@@ -11,6 +16,63 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  String totTitle(String input) {
+    final List<String> splitStr = input.split(' ');
+    for (int i = 0; i < splitStr.length; i++) {
+      splitStr[i] =
+          '${splitStr[i][0].toUpperCase()}${splitStr[i].substring(1)}';
+    }
+    final output = splitStr.join(' ');
+    return output;
+  }
+
+  List<SearchModel> searchList = [];
+  CryptoPageResponse? _cryptoData;
+
+  Future getData() async {
+    isLoading = true;
+    _cryptoData = await CryptoRepository().getCryptoPage();
+    isLoading = false;
+    setState(() {});
+  }
+
+  bool isLoading = false;
+
+  Future<List<SearchModel>> getSearchItemList(String textFieldData) async {
+    searchList = [];
+
+    for (int i = 0; i < _cryptoData!.cryptoListing.length; i++) {
+      String query = textFieldData.toUpperCase();
+      String query1 = textFieldData;
+
+      if (query == "") {
+        print("Empty");
+      } else {
+        print(query);
+        if (_cryptoData!.cryptoListing[i].symbol.contains(query)) {
+          searchList.add(SearchModel(
+              uuid: _cryptoData!.cryptoListing[i].uuid,
+              symbol: _cryptoData!.cryptoListing[i].symbol,
+              name: _cryptoData!.cryptoListing[i].name,
+              iconUrl: _cryptoData!.cryptoListing[i].iconUrl,
+              rank: _cryptoData!.cryptoListing[i].rank,
+              sparkline: _cryptoData!.cryptoListing[i].sparkline,
+              change: _cryptoData!.cryptoListing[i].change,
+              price: _cryptoData!.cryptoListing[i].price));
+        }
+      }
+    }
+
+    setState(() {});
+    return searchList;
+  }
+
   bool viewType = false; //default value is false, false means grid view
   bool searchIcon = true;
 
@@ -19,7 +81,6 @@ class _SearchState extends State<Search> {
 
   FocusNode focusSearch = FocusNode();
 
-  final _dataService = CryptoRepository();
   final _searchCoin = TextEditingController();
 
   @override
@@ -48,6 +109,9 @@ class _SearchState extends State<Search> {
                   this.cusIcon = Icon(Icons.close);
                   this.cusSearchBar = TextField(
                     textInputAction: TextInputAction.search,
+                    onChanged: (value) {
+                      getSearchItemList(value);
+                    },
                     focusNode: focusSearch,
                     controller: _searchCoin,
                     autofocus: true,
@@ -68,20 +132,11 @@ class _SearchState extends State<Search> {
                 } else {
                   cusIcon = Icon(Icons.search);
                   cusSearchBar = Text("Search");
+                  _searchCoin.clear();
                 }
               });
             },
           ),
-          CupertinoButton(
-              padding: EdgeInsets.all(0),
-              child: viewType == true
-                  ? Icon(Icons.grid_view_rounded, color: textWhite, size: 20)
-                  : Icon(Icons.view_list_rounded, color: textWhite, size: 24),
-              onPressed: () {
-                setState(() {
-                  viewType = !viewType;
-                });
-              }),
         ],
       ),
       backgroundColor: bgDark,
@@ -106,6 +161,7 @@ class _SearchState extends State<Search> {
               ),
             ),
             SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
               child: body(size),
             ),
           ],
@@ -118,227 +174,181 @@ class _SearchState extends State<Search> {
     return Center(
       child: Column(
         children: [
-          Column(
-            children: viewType
-                ? List.generate(
-                    4,
-                    (index) => Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 10, top: 8),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 60.0, sigmaY: 0),
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                  width: 0.2,
-                                  color: Colors.white.withOpacity(0.5)),
-                              color: Colors.grey.withOpacity(0.2),
-                            ),
-                            height: 80,
-                            width: (size.width - 10) * 0.95,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(24),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Coin Name",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: textWhite,
-                                          ),
+          Container(
+            height: size.height,
+            child: FutureBuilder(
+                future: getSearchItemList(_searchCoin.text),
+                builder: (context, AsyncSnapshot<List<SearchModel>?> snapshot) {
+                  if (snapshot.hasData &&
+                      snapshot.data != null &&
+                      _searchCoin.text.isNotEmpty) {
+                    return snapshot.data!.length != 0
+                        ? ListView.builder(
+                            padding: EdgeInsets.only(bottom: 153),
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              String price =
+                                  double.parse(snapshot.data![index].price)
+                                      .toStringAsFixed(2);
+                              String url = snapshot.data![index].iconUrl;
+                              String logo = url.replaceAll(".svg", ".png");
+                              String change = snapshot.data![index].change;
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CoinPage(
+                                              coinId:
+                                                  snapshot.data![index].uuid,
+                                              coinName:
+                                                  snapshot.data![index].name,
+                                            )),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 8),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 60.0, sigmaY: 0),
+                                      child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              width: 0.2,
+                                              color: Colors.white
+                                                  .withOpacity(0.5)),
+                                          color: Colors.grey.withOpacity(0.2),
                                         ),
-                                        Text(
-                                          "BNB",
-                                          style: TextStyle(
-                                              fontSize: 16, color: Colors.grey),
-                                        ), //extra alt text for coin
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "\$373,98",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: textWhite,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 3),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "+4,33%",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.greenAccent[700]),
-                                        ),
-                                        Icon(Icons.arrow_upward,
-                                            size: 16,
-                                            color: Colors.greenAccent[700]),
-                                      ],
-                                    ), //change in currency,s value text
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                : [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GridView.builder(
-                          shrinkWrap: true,
-                          primary: false,
-                          gridDelegate:
-                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 230,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10),
-                          itemCount: 4,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                    sigmaX: 30.0, sigmaY: 30.0),
-                                child: Container(
-                                  height: (size.width + 30) * 0.50,
-                                  width: (size.width - 10) * 0.46,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.greenAccent.shade700,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 15, top: 20, right: 5),
-                                        child: Column(
+                                        height: 80,
+                                        width: (size.width - 10) * 0.95,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Container(
-                                              height: 45,
-                                              width: 45,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(24),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 3),
-                                            Column(
+                                            Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  "ETH",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                    color: textWhite,
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10),
+                                                  child: Container(
+                                                    height: 60,
+                                                    width: 60,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(0.2),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(10.0),
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: logo,
+                                                        fit: BoxFit.contain,
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            const CircularProgressIndicator(),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            const Icon(
+                                                                Icons.error,
+                                                                color: Colors
+                                                                    .redAccent),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                                Text(
-                                                  "Ethereum",
-                                                  style:
-                                                      TextStyle(fontSize: 12),
+                                                const SizedBox(width: 20),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      snapshot
+                                                          .data![index].name,
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: textWhite,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 7,
+                                                    ),
+                                                    Text(
+                                                      snapshot
+                                                          .data![index].symbol,
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.grey),
+                                                    ), //extra alt text for coin
+                                                  ],
                                                 ),
                                               ],
                                             ),
                                           ],
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 15,
-                                            top: 5,
-                                            right: 5,
-                                            bottom: 8),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          // mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "\$373,98",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: textWhite,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 3),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  " +4,33%",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors
-                                                          .greenAccent[700]),
-                                                ),
-                                                Icon(Icons.arrow_upward,
-                                                    size: 16,
-                                                    color: Colors
-                                                        .greenAccent[700]),
-                                              ],
-                                            ), //change in currency,s value text
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }),
-                    ),
-                  ],
+                              );
+                            })
+                        : Container(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 32,
+                                ),
+                                Text(
+                                  "No Data Found",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                Text(
+                                  "Try some other words",
+                                  style: TextStyle(
+                                    letterSpacing: 0.6,
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                  } else {
+                    double heightadjust = (size.height) * 0.4;
+                    return Container(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: heightadjust),
+                        child: Text("Search for Coins here",
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    );
+                  }
+                }),
           ),
-          TextButton(onPressed: _getRepo, child: Text("tap for response"),),
-          const SizedBox(height: 75),
+          // const SizedBox(height: 75),
         ],
       ),
     );
   }
-  void _getRepo() {
-  _dataService.getCryptoPage();
-  print(_searchCoin.text);
 }
-}
-

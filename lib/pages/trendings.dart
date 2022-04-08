@@ -15,8 +15,8 @@ class Trending extends StatefulWidget {
 class _TrendingState extends State<Trending> {
   @override
   void initState() {
-    super.initState();
     getData();
+    super.initState();
   }
 
   bool isLoading = false;

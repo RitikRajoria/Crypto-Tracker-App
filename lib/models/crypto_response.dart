@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:crypto_app_ui/models/coin_detail_view.dart';
 import 'package:crypto_app_ui/models/crypto_page_response.dart';
+import 'package:crypto_app_ui/models/searchModel.dart';
 import 'package:http/http.dart' as http;
 
 class CryptoRepository {
