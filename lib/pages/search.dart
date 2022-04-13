@@ -54,7 +54,6 @@ class _SearchState extends State<Search> {
       if (query == "") {
         print("Empty");
       } else {
-        print(query);
         if (_cryptoData!.cryptoListing[i].symbol.contains(query) ||
             _cryptoData!.cryptoListing[i].name.contains(query1)) {
           searchList.add(SearchModel(
