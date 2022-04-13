@@ -466,8 +466,7 @@ class _FavoritesState extends State<Favorites> {
                                                                       .data[
                                                                           index]
                                                                       .uuid);
-                                                              print(
-                                                                  "1st ${snapshot.data[index].uuid}");
+
                                                               //
                                                               print(
                                                                   "Deleted item ${snapshot.data[index].name}");
@@ -477,17 +476,10 @@ class _FavoritesState extends State<Favorites> {
 
                                                               //
 
-                                                              // snapshot.data
-                                                              //     .removeWhere(snapshot
-                                                              //             .data[
-                                                              //         index]);
-
                                                               //
                                                               favsList
                                                                   .removeWhere(
                                                                       (element) {
-                                                                print(element
-                                                                    .uuid);
                                                                 return element
                                                                         .uuid ==
                                                                     snapshot
@@ -649,8 +641,7 @@ class _FavoritesState extends State<Favorites> {
                                                               snapshot
                                                                   .data[index]
                                                                   .uuid);
-                                                          print(
-                                                              "1st ${snapshot.data[index].uuid}");
+
                                                           //
                                                           print(
                                                               "Deleted item ${snapshot.data[index].name}");
@@ -659,16 +650,8 @@ class _FavoritesState extends State<Favorites> {
                                                               .getFavsList();
 
                                                           //
-
-                                                          // snapshot.data
-                                                          //     .removeWhere(snapshot
-                                                          //             .data[
-                                                          //         index]);
-
-                                                          //
                                                           favsList.removeWhere(
                                                               (element) {
-                                                            print(element.uuid);
                                                             return element
                                                                     .uuid ==
                                                                 snapshot
