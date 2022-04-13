@@ -45,13 +45,17 @@ class PhotoDBHelper {
     List<Map<String, dynamic>> maps =
         await dbClient.query(TABLE, columns: [ID, NAME, PHOTONAME]);
     List<Photo> photos = [];
-    if (maps.length > 0) {
-      for (int i = 0; i < maps.length; i++) {
-        photos.add(Photo.fromMap(maps[i]));
-      }
-    }
-    print(photos.length);
+
+    photos.add(Photo.fromMap(maps[0]));
+
+    print("database items = ${photos.length}");
+
     return photos;
+  }
+
+  Future<int> delete(int id) async {
+    var dbClient = await db;
+    return await dbClient.delete(TABLE, where: 'id = ?', whereArgs: [id]);
   }
 
   Future close() async {
