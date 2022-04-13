@@ -205,7 +205,10 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       Text(
                                         "Ethereum",
-                                        style: TextStyle(fontSize: 14,color: Colors.white.withOpacity(0.6)),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color:
+                                                Colors.white.withOpacity(0.6)),
                                       ),
                                     ],
                                   ),
@@ -246,7 +249,6 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Expanded(
-                              
                               child: LineChartWidget(),
                             ),
                           ],
@@ -256,13 +258,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(builder: (context) => CoinPage()),
-                    // );              
+                    // );
                   },
-                                  child: ClipRRect(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(49),
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
@@ -294,7 +296,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   const SizedBox(width: 12),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text("BNB",
                                           style: TextStyle(
@@ -303,7 +306,10 @@ class _HomePageState extends State<HomePage> {
                                             color: textWhite,
                                           )),
                                       Text("Binance",
-                                          style: TextStyle(fontSize: 14,color: Colors.white.withOpacity(0.6))),
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white
+                                                  .withOpacity(0.6))),
                                     ],
                                   ),
                                 ],
@@ -335,16 +341,16 @@ class _HomePageState extends State<HomePage> {
                                             color: Colors.redAccent[400]),
                                       ),
                                       Icon(Icons.arrow_downward,
-                                          size: 16, color: Colors.redAccent[400]),
+                                          size: 16,
+                                          color: Colors.redAccent[400]),
                                     ],
                                   ), //change in currency,s value text
                                 ],
                               ),
                             ),
                             Expanded(
-                                
-                                child: LineChartWidget2(),
-                              ),
+                              child: LineChartWidget2(),
+                            ),
                           ],
                         ),
                       ),
@@ -572,7 +578,7 @@ class LineChartWidget2 extends StatelessWidget {
     Colors.redAccent.shade700,
     Colors.redAccent.shade700.withOpacity(0.3),
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return LineChart(
@@ -605,7 +611,6 @@ class LineChartWidget2 extends StatelessWidget {
               FlSpot(13, 3),
             ],
             colors: gradientColor,
-
             barWidth: 2,
             dotData: FlDotData(show: false),
             belowBarData: BarAreaData(
