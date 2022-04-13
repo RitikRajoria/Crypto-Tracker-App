@@ -34,12 +34,10 @@ class _HomePageState extends State<HomePage> {
 
     photoDBHelper = PhotoDBHelper();
 
-    loadFromPhotoDB();
+    // loadFromPhotoDB();
 
     isLoading = false;
     print("false");
-
-    setState(() {});
   }
 
   int counter = 0;
@@ -77,11 +75,6 @@ class _HomePageState extends State<HomePage> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      drawer: Drawer(
-        child: Center(
-          child: Text("Drawer"),
-        ),
-      ),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
@@ -93,11 +86,6 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Colors.grey.withOpacity(0.2),
         centerTitle: true,
-        leading: IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Icon(Icons.menu)),
         title: Text(
           "Crypto Tracker",
           style: TextStyle(
@@ -144,7 +132,8 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                           height: 45,
                           width: 45,
-                          child: CircularProgressIndicator(color: Colors.red)),
+                          child:
+                              CircularProgressIndicator(color: Colors.white)),
                     )
                   : body(size),
             ),
@@ -174,7 +163,9 @@ class _HomePageState extends State<HomePage> {
                           width: 100,
                           decoration: BoxDecoration(
                             color: Colors.grey,
-                            border: Border.all(width: 2, color: Colors.red),
+                            border: Border.all(
+                                width: 1.3,
+                                color: Colors.white.withOpacity(0.4)),
                             shape: BoxShape.circle,
                             image: DecorationImage(
                               image: Image.file(

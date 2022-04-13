@@ -459,25 +459,42 @@ class _FavoritesState extends State<Favorites> {
                                                                 color: Colors
                                                                     .white70),
                                                             onPressed: () {
+                                                              //List view close button
+
                                                               dbHelper!.delete(
-                                                                  favsList[
+                                                                  snapshot
+                                                                      .data[
                                                                           index]
                                                                       .uuid);
                                                               print(
-                                                                  "Deleted item ${favsList[index].name}");
+                                                                  "1st ${snapshot.data[index].uuid}");
+                                                              //
+                                                              print(
+                                                                  "Deleted item ${snapshot.data[index].name}");
+                                                              //
                                                               listFromdb = dbHelper!
                                                                   .getFavsList();
-                                                              snapshot.data!
-                                                                  .remove(snapshot
-                                                                          .data![
-                                                                      index]);
-                                                              favsList.removeWhere(
-                                                                  (element) =>
-                                                                      element
-                                                                          .uuid ==
-                                                                      favsList[
-                                                                              index]
-                                                                          .uuid);
+
+                                                              //
+
+                                                              // snapshot.data
+                                                              //     .removeWhere(snapshot
+                                                              //             .data[
+                                                              //         index]);
+
+                                                              //
+                                                              favsList
+                                                                  .removeWhere(
+                                                                      (element) {
+                                                                print(element
+                                                                    .uuid);
+                                                                return element
+                                                                        .uuid ==
+                                                                    snapshot
+                                                                        .data[
+                                                                            index]
+                                                                        .uuid;
+                                                              });
 
                                                               setState(() {});
                                                             },
@@ -626,32 +643,40 @@ class _FavoritesState extends State<Favorites> {
                                                           color: Colors.white70,
                                                         ),
                                                         onPressed: () {
-                                                          setState(() {
-                                                            dbHelper!.delete(
+                                                          //grid view close button
+
+                                                          dbHelper!.delete(
+                                                              snapshot
+                                                                  .data[index]
+                                                                  .uuid);
+                                                          print(
+                                                              "1st ${snapshot.data[index].uuid}");
+                                                          //
+                                                          print(
+                                                              "Deleted item ${snapshot.data[index].name}");
+                                                          //
+                                                          listFromdb = dbHelper!
+                                                              .getFavsList();
+
+                                                          //
+
+                                                          // snapshot.data
+                                                          //     .removeWhere(snapshot
+                                                          //             .data[
+                                                          //         index]);
+
+                                                          //
+                                                          favsList.removeWhere(
+                                                              (element) {
+                                                            print(element.uuid);
+                                                            return element
+                                                                    .uuid ==
                                                                 snapshot
                                                                     .data[index]
-                                                                    .uuid);
-                                                            //
-                                                            print(
-                                                                "Deleted item ${favsList[index].name}");
-                                                            //
-                                                            listFromdb = dbHelper!
-                                                                .getFavsList();
-                                                            //
-                                                            snapshot.data
-                                                                .remove(snapshot
-                                                                        .data[
-                                                                    index]);
-                                                            //
-                                                            favsList.removeWhere(
-                                                                (element) =>
-                                                                    element
-                                                                        .uuid ==
-                                                                    favsList[
-                                                                            index]
-                                                                        .uuid);
-                                                            // getFavItemList();
+                                                                    .uuid;
                                                           });
+
+                                                          setState(() {});
                                                         },
                                                         padding:
                                                             EdgeInsets.all(0),
