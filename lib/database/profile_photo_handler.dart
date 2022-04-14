@@ -48,8 +48,6 @@ class PhotoDBHelper {
 
     photos.add(Photo.fromMap(maps[0]));
 
-    print("database items = ${photos.length}");
-
     return photos;
   }
 

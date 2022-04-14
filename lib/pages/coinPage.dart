@@ -184,30 +184,24 @@ class _CoinPageState extends State<CoinPage> {
     String logo = url.replaceAll(".svg", ".png");
     List<String?> sparkline = _cryptoCoinData!.data.coin.sparkline;
 
-    var highestPrice = _cryptoCoinData!.data.coin.allTimeHigh.price;
+    
 
-    var allTimeHigh = double.parse(highestPrice);
+    
 
     List<double?> sparklineData = [];
     print(sparkline.length);
 
     for (int i = 0; i < sparkline.length; i++) {
-      // print(i);
-
-      // print(sparkline[i]);
+      
       if (sparkline[i] == null) {
         print("Null data");
         sparklineData.add(double.parse(sparkline[i - 1]!));
       } else {
         sparklineData.add(double.parse(sparkline[i]!));
       }
-      // sparklineData.add(double.parse(sparkline[i]!));
-      // print(sparklineData[i]);
+      
     }
-    // print("All Time High");
-    // print(allTimeHigh);
-    // print("SPARKLINE DATA");
-    // print(sparklineData);
+   
 
     return Column(
       children: [
@@ -334,7 +328,7 @@ class _CoinPageState extends State<CoinPage> {
           // color: Colors.grey,
           child: LineChartWidget(
             sparkData: sparklineData,
-            allTimeHigh: allTimeHigh,
+            
           ),
         ),
         const SizedBox(height: 24),
@@ -455,10 +449,10 @@ class LineChartWidget extends StatelessWidget {
   ];
 
   final List<double?> sparkData;
-  double allTimeHigh;
+  
 
   LineChartWidget(
-      {Key? key, required this.sparkData, required this.allTimeHigh})
+      {Key? key, required this.sparkData})
       : super(key: key);
 
   @override

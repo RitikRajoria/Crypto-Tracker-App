@@ -56,6 +56,3 @@ class CryptoPageResponse {
     return CryptoPageResponse(cryptoListing: cryptoListing);
   }
 }
-
-
-

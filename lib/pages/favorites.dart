@@ -26,9 +26,8 @@ class _FavoritesState extends State<Favorites> {
   @override
   void initState() {
     dbHelper = FavDBHelper();
-    // getFavItemList();
+
     super.initState();
-    // setState(() {});
   }
 
   Future<List<FavsModel>> loadDataFromDB() async {
@@ -830,3 +829,5 @@ class _FavoritesState extends State<Favorites> {
     setState(() {});
   }
 }
+
+

@@ -30,3 +30,23 @@ class FavItemModel {
       required this.change,
       required this.price});
 }
+
+class FavItemModelforHome {
+  final uuid;
+  final symbol;
+  final name;
+  final iconUrl;
+
+  final change;
+  final price;
+  final List<String> sparkdata;
+
+  FavItemModelforHome(
+      {required this.uuid,
+      required this.symbol,
+      required this.name,
+      required this.iconUrl,
+      required this.change,
+      required this.price,
+      required this.sparkdata});
+}
