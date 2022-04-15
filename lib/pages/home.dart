@@ -157,6 +157,8 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
+                getData();
+                getFavItemList();
                 setState(() {});
               },
               icon: Icon(Icons.refresh_rounded, size: 25)),
@@ -453,16 +455,28 @@ class _HomePageState extends State<HomePage> {
                                                                 color:
                                                                     textWhite,
                                                               )),
-                                                          Text(
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .name,
-                                                              style: TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          0.6))),
+                                                          Container(
+                                                            width: (size.width -
+                                                                    70) *
+                                                                0.3,
+                                                            child: Text(
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .name,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .fade,
+                                                                maxLines: 1,
+                                                                softWrap: false,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            0.6))),
+                                                          ),
                                                         ],
                                                       ),
                                                     ],
@@ -1143,15 +1157,22 @@ class _HomePageState extends State<HomePage> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    cryptoData!
-                                                        .cryptoListing[index]
-                                                        .name,
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: textWhite,
+                                                  Container(
+                                                    width: (size.width) * 0.35,
+                                                    child: Text(
+                                                      cryptoData!
+                                                          .cryptoListing[index]
+                                                          .name,
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      maxLines: 1,
+                                                      softWrap: false,
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: textWhite,
+                                                      ),
                                                     ),
                                                   ),
                                                   Text(
@@ -1166,63 +1187,111 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ],
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "\$${price}",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: textWhite,
-                                                    letterSpacing: 0.7),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 8),
+                                            child: Container(
+                                              width: (size.width) * 0.35,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "\$${price}",
+                                                    overflow: TextOverflow.fade,
+                                                    maxLines: 1,
+                                                    softWrap: false,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: textWhite,
+                                                        letterSpacing: 0.7),
+                                                  ),
+                                                  const SizedBox(height: 3),
+                                                  ((change)[0] == "-")
+                                                      ? Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Container(
+                                                              alignment: Alignment
+                                                                  .centerRight,
+                                                              width:
+                                                                  (size.width) *
+                                                                      0.3,
+                                                              child: Text(
+                                                                "- " +
+                                                                    change
+                                                                        .replaceAll(
+                                                                            "-",
+                                                                            "") +
+                                                                    "%",
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .fade,
+                                                                maxLines: 1,
+                                                                softWrap: false,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: Colors
+                                                                            .redAccent[
+                                                                        700]),
+                                                              ),
+                                                            ),
+                                                            Icon(
+                                                                Icons
+                                                                    .arrow_downward,
+                                                                size: 16,
+                                                                color: Colors
+                                                                        .redAccent[
+                                                                    700]),
+                                                          ],
+                                                        )
+                                                      : //change in currency,s value text
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Container(
+                                                              alignment: Alignment
+                                                                  .centerRight,
+                                                              width:
+                                                                  (size.width) *
+                                                                      0.3,
+                                                              child: Text(
+                                                                "+ ${change}" +
+                                                                    "%",
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .fade,
+                                                                maxLines: 1,
+                                                                softWrap: false,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: Colors
+                                                                            .greenAccent[
+                                                                        700]),
+                                                              ),
+                                                            ),
+                                                            Icon(
+                                                                Icons
+                                                                    .arrow_upward,
+                                                                size: 16,
+                                                                color: Colors
+                                                                        .greenAccent[
+                                                                    700]),
+                                                          ],
+                                                        ), //change in currency,s value text
+                                                ],
                                               ),
-                                              const SizedBox(height: 3),
-                                              ((change)[0] == "-")
-                                                  ? Row(
-                                                      children: [
-                                                        Text(
-                                                          "- " +
-                                                              change.replaceAll(
-                                                                  "-", "") +
-                                                              "%",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Colors
-                                                                      .redAccent[
-                                                                  700]),
-                                                        ),
-                                                        Icon(
-                                                            Icons
-                                                                .arrow_downward,
-                                                            size: 16,
-                                                            color: Colors
-                                                                    .redAccent[
-                                                                700]),
-                                                      ],
-                                                    )
-                                                  : //change in currency,s value text
-                                                  Row(
-                                                      children: [
-                                                        Text(
-                                                          "+ ${change}" + "%",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Colors
-                                                                      .greenAccent[
-                                                                  700]),
-                                                        ),
-                                                        Icon(Icons.arrow_upward,
-                                                            size: 16,
-                                                            color: Colors
-                                                                    .greenAccent[
-                                                                700]),
-                                                      ],
-                                                    ), //change in currency,s value text
-                                            ],
+                                            ),
                                           ),
                                         ],
                                       ),

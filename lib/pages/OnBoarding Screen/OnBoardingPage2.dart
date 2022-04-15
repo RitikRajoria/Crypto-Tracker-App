@@ -100,6 +100,10 @@ class _OnBoardingPage2State extends State<OnBoardingPage2> {
             inProcess = false;
             croppedImg = cropped;
           });
+        } else {
+          this.setState(() {
+            inProcess = false;
+          });
         }
       } else {
         this.setState(() {

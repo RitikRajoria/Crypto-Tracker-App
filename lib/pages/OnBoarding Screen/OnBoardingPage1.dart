@@ -121,7 +121,7 @@ class _OnBoardingPage1State extends State<OnBoardingPage1> {
                         Center(
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: ((context) =>
