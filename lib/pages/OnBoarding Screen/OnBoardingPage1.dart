@@ -118,32 +118,32 @@ class _OnBoardingPage1State extends State<OnBoardingPage1> {
                         SizedBox(
                           height: 50,
                         ),
-                        Center(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) =>
-                                          OnBoardingPage2())));
-                            },
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                              child: Center(
-                                  child: Icon(Icons.arrow_forward_ios_rounded)),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
                 ),
               ],
+            ),
+          ),
+          Positioned(
+            bottom: 30,
+            left: (size.width) * 0.425,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => OnBoardingPage2())));
+              },
+              child: Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Center(child: Icon(Icons.arrow_forward_ios_rounded)),
+              ),
             ),
           ),
         ],
