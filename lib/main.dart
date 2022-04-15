@@ -1,5 +1,6 @@
 import 'package:crypto_app_ui/bloc/crypto_event.dart';
 import 'package:crypto_app_ui/homepage_navbar.dart';
+import 'package:crypto_app_ui/pages/OnBoarding%20Screen/OnBoardingPage1.dart';
 import 'package:crypto_app_ui/pages/OnBoarding%20Screen/OnBoardingPage2.dart';
 import 'package:crypto_app_ui/pages/coinPage.dart';
 import 'package:crypto_app_ui/pages/home.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // home: HomePageNavbar(),
-      home: showHome ? HomePageNavbar() : OnBoardingPage2(),
+      home: showHome ? HomePageNavbar() : OnBoardingPage1(),
 
       routes: {
         // MyRoutes.loginRoute: (context) => LoginPage(),
