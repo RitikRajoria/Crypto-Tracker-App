@@ -31,15 +31,15 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
     Colors.white,
     Colors.white,
   ];
- 
+
   bool isRunFirstTime = false;
 
   @override
   Widget build(BuildContext context) {
-    if (!isRunFirstTime){
+    if (!isRunFirstTime) {
       iconColor[pageIndex] = Colors.black;
       isRunFirstTime = true;
-      setState(() { });
+      setState(() {});
     }
     return Scaffold(
       body: Stack(
@@ -55,24 +55,43 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
       ),
     );
   }
-Widget bottombar() {
+
+  Widget bottombar() {
     return CurvedNavigationBar(
       index: pageIndex,
       height: 60.0,
       items: <Widget>[
-        Icon(Icons.trending_up, size: 30, color: iconColor[0],),
-        Icon(Icons.star_outline, size: 30,color: iconColor[1],),
-        Icon(Icons.home, size: 30,color: iconColor[2],),
-        Icon(Icons.search, size: 30,color:  iconColor[3],),
-        Icon(Icons.settings, size: 30,color: iconColor[4],),
+        Icon(
+          Icons.trending_up,
+          size: 30,
+          color: iconColor[0],
+        ),
+        Icon(
+          Icons.star_outline,
+          size: 30,
+          color: iconColor[1],
+        ),
+        Icon(
+          Icons.home,
+          size: 30,
+          color: iconColor[2],
+        ),
+        Icon(
+          Icons.search,
+          size: 30,
+          color: iconColor[3],
+        ),
+        Icon(
+          Icons.settings,
+          size: 30,
+          color: iconColor[4],
+        ),
       ],
-      color: Colors.grey.shade700,
-      buttonBackgroundColor:
-Colors.white,
+      color: Colors.grey.shade700.withOpacity(0.9),
+      buttonBackgroundColor: Colors.white,
       backgroundColor: Colors.transparent,
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 400),
-      
       onTap: (index) {
         pageIndex = index;
         setState(() {
@@ -83,7 +102,6 @@ Colors.white,
             }
           }
         });
-       
       },
     );
   }

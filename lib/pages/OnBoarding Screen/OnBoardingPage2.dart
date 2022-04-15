@@ -174,10 +174,12 @@ class _OnBoardingPage2State extends State<OnBoardingPage2> {
                                       await SharedPreferences.getInstance();
                                   prefs.setBool('showHome', true);
 
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              HomePageNavbar()));
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePageNavbar()),
+                                    (Route<dynamic> route) => false,
+                                  );
                                 } else {
                                   print("Fill textField");
                                 }

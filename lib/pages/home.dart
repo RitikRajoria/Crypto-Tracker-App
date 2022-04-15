@@ -48,7 +48,6 @@ class _HomePageState extends State<HomePage> {
 
     isLoading = false;
     print("false");
-    setState(() {});
   }
 
 //favs element
@@ -157,8 +156,6 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                getData();
-                getFavItemList();
                 setState(() {});
               },
               icon: Icon(Icons.refresh_rounded, size: 25)),
