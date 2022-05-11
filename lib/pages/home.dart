@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_app_ui/database/fav_handler.dart';
 import 'package:crypto_app_ui/database/profile_photo_handler.dart';
@@ -11,6 +10,7 @@ import 'package:crypto_app_ui/models/favs.dart';
 import 'package:crypto_app_ui/models/photoModel.dart';
 import 'package:crypto_app_ui/pages/coinPage.dart';
 import 'package:crypto_app_ui/pages/favorites.dart';
+import 'package:crypto_app_ui/pages/settingsPage.dart';
 import 'package:crypto_app_ui/pages/trendings.dart';
 import 'package:crypto_app_ui/themes/colors.dart';
 import 'dart:ui';
@@ -83,6 +83,7 @@ class _HomePageState extends State<HomePage> {
         : favsList.length >= 1
             ? 1
             : 0;
+
     return favsList;
   }
 
@@ -125,6 +126,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     }
     getDataCounter++;
+
     return cryptoData;
   }
 
@@ -152,7 +154,15 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
           ),
         ),
-        leading: Icon(Icons.person, size: 25),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SettingsPage(),
+                ),
+              );
+            },
+            icon: Icon(Icons.person, size: 25)),
         actions: [
           IconButton(
               onPressed: () {

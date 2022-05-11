@@ -46,6 +46,13 @@ class FavDBHelper {
     return await dbClient!.delete('favs', where: 'uuid = ?', whereArgs: [uuid]);
   }
 
+  Future deleteEntries() async {
+    var dbClient = await db;
+    var deleteEntry = await dbClient!.rawQuery('''DELETE FROM favs''');
+    print("entries deleted");
+    return deleteEntry;
+  }
+
   Future<bool> uuidExists(String uuid) async {
     var dbClient = await db;
     var result = await dbClient!.rawQuery(

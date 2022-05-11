@@ -1,8 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:crypto_app_ui/pages/OnBoarding%20Screen/OnBoardingPage1.dart';
+import 'package:crypto_app_ui/pages/favorites.dart';
+import 'package:crypto_app_ui/pages/search.dart';
+import 'package:crypto_app_ui/pages/trendings.dart';
 import 'package:crypto_app_ui/themes/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../database/fav_handler.dart';
+import '../database/profile_photo_handler.dart';
+import '../models/photoModel.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -10,6 +23,54 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  int counter = 0;
+  String? _photoPath;
+  PhotoDBHelper? photoDBHelper;
+  int? userid;
+  FavDBHelper? favdbHelper;
+
+  Future<int> logOut(int id) async {
+    final deleteUser = await photoDBHelper?.delete(id);
+    final deleteFavsTable = await favdbHelper?.deleteEntries();
+
+    return deleteUser!;
+  }
+
+  Future<List<Photo>> loadFromPhotoDB() async {
+    List<Photo> listofphotos = [];
+
+    listofphotos = await photoDBHelper!.getPhotos();
+
+    _photoPath = await _createFileFromString(listofphotos[0].photoName);
+    if (counter < 1) {
+      userid = listofphotos[0].id;
+      setState(() {});
+    }
+    counter++;
+
+    return listofphotos;
+  }
+
+  Future<String> _createFileFromString(String photoName) async {
+    final encodedStr = photoName;
+    String photoPath;
+    Uint8List bytes = base64.decode(encodedStr);
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    File file = File(
+        "$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".jpg");
+    await file.writeAsBytes(bytes);
+    photoPath = file.path;
+
+    return photoPath;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    photoDBHelper = PhotoDBHelper();
+    favdbHelper = FavDBHelper();
+  }
+
   bool themeSwitch = false;
   @override
   Widget build(BuildContext context) {
@@ -52,14 +113,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
 //blur background
 //first edit profile container
-            body(size),
+            SingleChildScrollView(child: body(size, context)),
           ],
         ),
       ),
     );
   }
 
-  Widget body(Size size) {
+  Widget body(Size size, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Column(
@@ -73,84 +134,61 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    Container(
-                      height: (size.height - 228) * 0.3,
-                      width: size.width,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "User Name",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            "example@xyzmail.com",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w100),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 45,
-                      width: (size.width - 60) * 0.4,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 0.5, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.white.withOpacity(0.3),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: TextButton(
-                          style: ButtonStyle(
-                            overlayColor: MaterialStateProperty.all(
-                                Colors.grey.withOpacity(0.8)),
-                          ),
-                          onPressed: () {
-                            print("tapped and working");
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Edit Profile",
+                child: FutureBuilder(
+                    future: loadFromPhotoDB(),
+                    builder: (context, AsyncSnapshot<List<Photo>> snapshot) {
+                      if (snapshot.data != null) {
+                        return Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            Container(
+                              height: (size.height) * 0.19,
+                              width: size.width,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey.withOpacity(0.4),
+                                      border: Border.all(
+                                          width: 1.2,
+                                          color: Colors.white.withOpacity(0.4)),
+                                      image: DecorationImage(
+                                        image: Image.file(
+                                          File(_photoPath!),
+                                        ).image,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    snapshot.data![0].name,
                                     style: TextStyle(
-                                        fontSize: 16,
                                         color: Colors.white,
-                                        fontWeight: FontWeight.w300)),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.white.withOpacity(0.7),
-                                  size: 16,
-                                ),
-                              ],
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Container(
+                          height: (size.height - 80) * 0.95,
+                          child: Center(
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              child: CircularProgressIndicator(
+                                  color: Colors.white),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15)
-                  ],
-                ),
+                        );
+                      }
+                    }),
               ),
             ),
           ),
@@ -197,10 +235,16 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontSize: 18,
                             ),
                           ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 18,
-                            color: Colors.white,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Favorites()));
+                            },
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 18,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -210,7 +254,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 8, bottom: 12),
+                          left: 15, right: 15, top: 8, bottom: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -221,10 +265,46 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontSize: 18,
                             ),
                           ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 18,
-                            color: Colors.white,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Trending()));
+                            },
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.grey.withOpacity(0.3),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, top: 8, bottom: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Search",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Search()));
+                            },
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 18,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -266,72 +346,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 15, bottom: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Language",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "English",
-                                style: TextStyle(
-                                    color: Colors.grey.withOpacity(0.8)),
-                              ),
-                              const SizedBox(width: 5),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 18,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 8, top: 0, bottom: 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Light Mode",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                          Transform.scale(
-                            scale: 0.8,
-                            child: CupertinoSwitch(
-                              value: themeSwitch,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  themeSwitch = value;
-                                });
-                                print(value);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 8, bottom: 14),
+                          left: 15, right: 15, top: 15, bottom: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -342,10 +357,28 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontSize: 18,
                             ),
                           ),
-                          Icon(
-                            Icons.logout,
-                            size: 22,
-                            color: Colors.white,
+                          GestureDetector(
+                            onTap: () async {
+                              print("log out tapped");
+                              logOut(userid!).then((value) async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setBool('showHome', false).then(
+                                      (value) =>
+                                          Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              OnBoardingPage1(),
+                                        ),
+                                      ),
+                                    );
+                              });
+                            },
+                            child: Icon(
+                              Icons.logout,
+                              size: 22,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),

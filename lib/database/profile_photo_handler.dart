@@ -53,6 +53,7 @@ class PhotoDBHelper {
 
   Future<int> delete(int id) async {
     var dbClient = await db;
+    print("deleteing");
     return await dbClient.delete(TABLE, where: 'id = ?', whereArgs: [id]);
   }
 

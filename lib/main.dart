@@ -1,4 +1,3 @@
-import 'package:crypto_app_ui/bloc/crypto_event.dart';
 import 'package:crypto_app_ui/homepage_navbar.dart';
 import 'package:crypto_app_ui/pages/OnBoarding%20Screen/OnBoardingPage1.dart';
 import 'package:crypto_app_ui/pages/OnBoarding%20Screen/OnBoardingPage2.dart';
@@ -8,8 +7,6 @@ import 'package:crypto_app_ui/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'bloc/crypto_bloc.dart';
 import 'package:flutter/services.dart';
 
 Future main() async {
