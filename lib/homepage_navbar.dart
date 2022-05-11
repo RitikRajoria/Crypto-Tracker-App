@@ -7,7 +7,9 @@ import 'package:crypto_app_ui/pages/trendings.dart';
 import 'package:flutter/material.dart';
 
 class HomePageNavbar extends StatefulWidget {
-  HomePageNavbar({Key? key}) : super(key: key);
+  final int pageNumber;
+
+  HomePageNavbar({Key? key, required this.pageNumber}) : super(key: key);
 
   @override
   State<HomePageNavbar> createState() => _HomePageNavbarState();
@@ -31,6 +33,12 @@ class _HomePageNavbarState extends State<HomePageNavbar> {
     Colors.white,
     Colors.white,
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    pageIndex = widget.pageNumber;
+  }
 
   bool isRunFirstTime = false;
 

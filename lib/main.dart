@@ -33,7 +33,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // home: HomePageNavbar(),
-      home: showHome ? HomePageNavbar() : OnBoardingPage1(),
+      home: showHome
+          ? HomePageNavbar(
+              pageNumber: 2,
+            )
+          : OnBoardingPage1(),
 
       routes: {
         // MyRoutes.loginRoute: (context) => LoginPage(),

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_app_ui/database/fav_handler.dart';
 import 'package:crypto_app_ui/database/profile_photo_handler.dart';
+import 'package:crypto_app_ui/homepage_navbar.dart';
 import 'package:crypto_app_ui/models/crypto_page_response.dart';
 import 'package:crypto_app_ui/models/crypto_response.dart';
 import 'package:crypto_app_ui/models/favs.dart';
@@ -51,11 +52,6 @@ class _HomePageState extends State<HomePage> {
   }
 
 //favs element
-  Future<List<FavsModel>> loadDataFromDB() async {
-    listFromdb = favdbHelper!.getFavsList();
-    print("favs database loaded");
-    return listFromdb;
-  }
 
   Future<List<FavItemModelforHome>?> getFavItemList() async {
     CryptoPageResponse? _cryptoData = await CryptoRepository().getCryptoPage();
@@ -118,14 +114,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   //Recommendations tab
-  int getDataCounter = 0;
+
   Future<CryptoPageResponse?> getData() async {
     cryptoData = await CryptoRepository().getCryptoPage();
-
-    if (getDataCounter < 1) {
-      setState(() {});
-    }
-    getDataCounter++;
 
     return cryptoData;
   }
@@ -158,7 +149,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => SettingsPage(),
+                  builder: (context) => HomePageNavbar(pageNumber: 4),
                 ),
               );
             },
@@ -291,10 +282,11 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Favorites()))
-                        .then((value) => onGoback());
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomePageNavbar(
+                                  pageNumber: 1,
+                                ))).then((value) => onGoback());
                   },
                   child: Row(
                     children: [
@@ -872,7 +864,9 @@ class _HomePageState extends State<HomePage> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            Trending())).then(
+                                                            HomePageNavbar(
+                                                              pageNumber: 0,
+                                                            ))).then(
                                                     (value) => onGoback());
                                               },
                                               child: ClipRRect(
@@ -956,10 +950,11 @@ class _HomePageState extends State<HomePage> {
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Trending()))
-                                      .then((value) => onGoback());
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePageNavbar(
+                                                pageNumber: 0,
+                                              ))).then((value) => onGoback());
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(49),
@@ -1055,9 +1050,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Trending()))
-                        .then((value) => onGoback());
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomePageNavbar(
+                                  pageNumber: 0,
+                                ))).then((value) => onGoback());
                   },
                   child: Text(
                     "View All",

@@ -272,7 +272,9 @@ class _OnBoardingPage2State extends State<OnBoardingPage2> {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomePageNavbar()),
+                                      builder: (context) => HomePageNavbar(
+                                            pageNumber: 2,
+                                          )),
                                   (Route<dynamic> route) => false,
                                 );
                                 avatarError = false;

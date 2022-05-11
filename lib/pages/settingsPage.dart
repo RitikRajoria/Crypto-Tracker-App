@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../database/fav_handler.dart';
 import '../database/profile_photo_handler.dart';
+import '../homepage_navbar.dart';
 import '../models/photoModel.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -238,7 +239,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Favorites()));
+                                  builder: (context) => HomePageNavbar(
+                                        pageNumber: 1,
+                                      )));
                             },
                             child: Icon(
                               Icons.arrow_forward_ios,
@@ -268,7 +271,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Trending()));
+                                  builder: (context) => HomePageNavbar(
+                                        pageNumber: 0,
+                                      )));
                             },
                             child: Icon(
                               Icons.arrow_forward_ios,
@@ -298,7 +303,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Search()));
+                                  builder: (context) => HomePageNavbar(
+                                        pageNumber: 3,
+                                      )));
                             },
                             child: Icon(
                               Icons.arrow_forward_ios,
