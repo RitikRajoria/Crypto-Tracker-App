@@ -132,6 +132,7 @@ class _TrendingState extends State<Trending> {
                       child: ListView.builder(
                         itemCount: _cryptoData?.cryptoListing.length,
                         itemBuilder: (context, index) {
+                          print("${_cryptoData?.cryptoListing.length}");
                           String price = double.parse(
                                   _cryptoData?.cryptoListing[index].price)
                               .toStringAsFixed(3);
@@ -319,7 +320,9 @@ class _TrendingState extends State<Trending> {
                                     ),
                                   ),
                                 ),
-                                if (index == 49) SizedBox(height: 158),
+                                if (index ==
+                                    (_cryptoData!.cryptoListing.length - 1))
+                                  SizedBox(height: 158),
                               ],
                             ),
                           );

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:crypto_app_ui/models/coin_detail_view.dart';
 import 'package:crypto_app_ui/models/crypto_page_response.dart';
+import 'package:crypto_app_ui/models/crypto_search_response.dart';
 import 'package:crypto_app_ui/models/searchModel.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,7 +12,9 @@ class CryptoRepository {
   final client = http.Client();
 
   Future<CryptoPageResponse> getCryptoPage() async {
-    final uri = Uri.http(baseUrl, '/v2/coins');
+    int limit = 100;
+    final query = {'limit': '$limit'};
+    final uri = Uri.http(baseUrl, '/v2/coins', query);
 
     final response = await http.get(uri, headers: {
       "x-access-token":
@@ -23,6 +26,23 @@ class CryptoRepository {
     // log(response.body);
 
     return CryptoPageResponse.fromJson(json);
+  }
+
+  Future<CryptoSearchPageResponse> getSearchedCoin(String searchText) async {
+    
+    final query = {'search': '$searchText'};
+    final uri = Uri.http(baseUrl, '/v2/coins', query);
+
+    final response = await http.get(uri, headers: {
+      "x-access-token":
+          "coinranking2aa5a669d3dd00d08906ceca1120bdc28a28c040c27acaa5",
+    });
+
+    final json = jsonDecode(response.body);
+
+    // log(response.body);
+
+    return CryptoSearchPageResponse.fromJson(json);
   }
 
   Future<CoinResponse> getCryptoCoinPage(

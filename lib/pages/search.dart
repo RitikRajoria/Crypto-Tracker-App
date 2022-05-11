@@ -3,10 +3,11 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_app_ui/models/crypto_response.dart';
+import 'package:crypto_app_ui/models/crypto_search_response.dart';
 import 'package:crypto_app_ui/pages/coinPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../models/crypto_page_response.dart';
+
 import '../models/searchModel.dart';
 import '../themes/colors.dart';
 
@@ -18,7 +19,6 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   @override
   void initState() {
-    getData();
     super.initState();
   }
 
@@ -33,11 +33,12 @@ class _SearchState extends State<Search> {
   }
 
   List<SearchModel> searchList = [];
-  CryptoPageResponse? _cryptoData;
+  CryptoSearchPageResponse? _cryptoData;
 
-  Future getData() async {
+  Future getData(String searchText) async {
     isLoading = true;
-    _cryptoData = await CryptoRepository().getCryptoPage();
+    print("$searchText");
+    _cryptoData = await CryptoRepository().getSearchedCoin(searchText);
     isLoading = false;
     setState(() {});
   }
@@ -47,25 +48,19 @@ class _SearchState extends State<Search> {
   Future<List<SearchModel>> getSearchItemList(String textFieldData) async {
     searchList = [];
 
-    for (int i = 0; i < _cryptoData!.cryptoListing.length; i++) {
-      String query = textFieldData.toUpperCase();
-      String query1 = toTitle(textFieldData);
-
-      if (query == "") {
+    for (int i = 0; i < _cryptoData!.cryptoSearchList.length; i++) {
+      if (textFieldData == "") {
         print("Empty");
       } else {
-        if (_cryptoData!.cryptoListing[i].symbol.contains(query) ||
-            _cryptoData!.cryptoListing[i].name.contains(query1)) {
-          searchList.add(SearchModel(
-              uuid: _cryptoData!.cryptoListing[i].uuid,
-              symbol: _cryptoData!.cryptoListing[i].symbol,
-              name: _cryptoData!.cryptoListing[i].name,
-              iconUrl: _cryptoData!.cryptoListing[i].iconUrl,
-              rank: _cryptoData!.cryptoListing[i].rank,
-              sparkline: _cryptoData!.cryptoListing[i].sparkline,
-              change: _cryptoData!.cryptoListing[i].change,
-              price: _cryptoData!.cryptoListing[i].price));
-        }
+        searchList.add(
+          SearchModel(
+            uuid: _cryptoData!.cryptoSearchList[i].uuid,
+            symbol: _cryptoData!.cryptoSearchList[i].symbol,
+            name: _cryptoData!.cryptoSearchList[i].name,
+            iconUrl: _cryptoData!.cryptoSearchList[i].iconUrl,
+          ),
+        );
+        setState(() {});
       }
     }
 
@@ -110,6 +105,7 @@ class _SearchState extends State<Search> {
                   this.cusSearchBar = TextField(
                     textInputAction: TextInputAction.search,
                     onChanged: (value) {
+                      getData(value);
                       getSearchItemList(value);
                     },
                     focusNode: focusSearch,
@@ -187,12 +183,9 @@ class _SearchState extends State<Search> {
                             padding: EdgeInsets.only(bottom: 153),
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                              String price =
-                                  double.parse(snapshot.data![index].price)
-                                      .toStringAsFixed(2);
                               String url = snapshot.data![index].iconUrl;
                               String logo = url.replaceAll(".svg", ".png");
-                              String change = snapshot.data![index].change;
+                              // String change = snapshot.data![index].change;
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(

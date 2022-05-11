@@ -48,7 +48,6 @@ class _HomePageState extends State<HomePage> {
     favdbHelper = FavDBHelper();
 
     isLoading = false;
-    print("false");
   }
 
 //favs element
