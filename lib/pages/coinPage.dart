@@ -26,6 +26,7 @@ class _CoinPageState extends State<CoinPage> {
   FavDBHelper? dbHelper;
 
   late Future<List<FavsModel>> favsList;
+  int prevIndex = 0;
 
   bool favBtn = false;
 
@@ -52,15 +53,16 @@ class _CoinPageState extends State<CoinPage> {
   }
 
   bool isLoading = false;
-  var timePeriod = "7d";
+  var timePeriod = "24h";
   bool isError = false;
+
   Future getCoinData() async {
     isLoading = true;
+
     final snackBar = SnackBar(
       content: Text('No Data Found!'),
     );
-    print("BEEP BOOP");
-    print(widget.coinId);
+
     try {
       _cryptoCoinData = await CryptoRepository()
           .getCryptoCoinPage(uuid: widget.coinId, time: timePeriod);
@@ -78,8 +80,8 @@ class _CoinPageState extends State<CoinPage> {
   CoinResponse? _cryptoCoinData;
 
   List<TabItemModel> tabItems = [
-    TabItemModel(isSelected: false, itemText: '1D'),
-    TabItemModel(isSelected: true, itemText: '1W'),
+    TabItemModel(isSelected: true, itemText: '1D'),
+    TabItemModel(isSelected: false, itemText: '1W'),
     TabItemModel(isSelected: false, itemText: '1M'),
     TabItemModel(isSelected: false, itemText: '1Y'),
     TabItemModel(isSelected: false, itemText: 'All'),
@@ -169,8 +171,62 @@ class _CoinPageState extends State<CoinPage> {
                     ),
                   ),
                   body(size),
+                  favButton(size),
                 ],
               ),
+      ),
+    );
+  }
+
+  Positioned favButton(Size size) {
+    return Positioned(
+      bottom: 30,
+      right: 12,
+      left: 10,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          primary: Colors.white,
+          onPrimary: Colors.black,
+          shape: CircleBorder(),
+        ),
+        onPressed: () {
+          setState(() {
+            if (favBtn == false) {
+              dbHelper!.insert(FavsModel(uuid: widget.coinId)).then((value) {
+                print("Added to Favorites ${widget.coinName}");
+                setState(() {
+                  favsList = dbHelper!.getFavsList();
+                });
+              }).onError((error, stackTrace) {
+                print(error.toString());
+              });
+            } else if (favBtn == true) {
+              dbHelper!.delete(widget.coinId);
+              favsList = dbHelper!.getFavsList();
+              print("deleted ${widget.coinName}");
+            }
+
+            print("button pressed");
+            favBtn = !favBtn;
+            print(favBtn);
+          });
+        },
+        child: FutureBuilder(
+          builder: ((context, snapshot) {
+            return Container(
+              height: 50,
+              width: (size.width),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(favBtn ? Icons.star : Icons.star_border, size: 30),
+                ],
+              ),
+            );
+          }),
+          future: entryCheck(),
+        ),
       ),
     );
   }
@@ -300,6 +356,7 @@ class _CoinPageState extends State<CoinPage> {
                 return timelineTab(
                   onTap: () {
                     tabItems[index].isSelected = true;
+
                     for (int i = 0; i < tabItems.length; i++) {
                       if (index != i) {
                         tabItems[i].isSelected = false;
@@ -314,69 +371,32 @@ class _CoinPageState extends State<CoinPage> {
             ),
           ),
         ),
-        const SizedBox(height: 20),
-        Container(
-          height: 220,
-          width: size.width,
-          // color: Colors.grey,
-          child: LineChartWidget(
-            sparkData: sparklineData,
-          ),
+        const SizedBox(
+          height: 60,
         ),
-        const SizedBox(height: 24),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            primary: Colors.white,
-            onPrimary: Colors.black,
-            shape: CircleBorder(),
-          ),
-          onPressed: () {
-            setState(() {
-              if (favBtn == false) {
-                dbHelper!.insert(FavsModel(uuid: widget.coinId)).then((value) {
-                  print("Added to Favorites ${widget.coinName}");
-                  setState(() {
-                    favsList = dbHelper!.getFavsList();
-                  });
-                }).onError((error, stackTrace) {
-                  print(error.toString());
-                });
-              } else if (favBtn == true) {
-                dbHelper!.delete(widget.coinId);
-                favsList = dbHelper!.getFavsList();
-                print("deleted ${widget.coinName}");
-              }
-
-              print("button pressed");
-              favBtn = !favBtn;
-              print(favBtn);
-            });
-          },
-          child: FutureBuilder(
-            builder: ((context, snapshot) {
-              return Container(
-                height: 50,
-                width: (size.width),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(favBtn ? Icons.star : Icons.star_border, size: 30),
-                  ],
-                ),
-              );
-            }),
-            future: entryCheck(),
-          ),
+        Expanded(
+          child: chart(size, sparklineData),
         ),
       ],
     );
   }
 
-  Widget timelineTab(
-      {required int index,
-      required Function onTap,
-      required List<TabItemModel> tabItems}) {
+  Container chart(size, List<double?> sparklineData) {
+    return Container(
+      height: 220,
+      width: size.width,
+      // color: Colors.grey,
+      child: LineChartWidget(
+        sparkData: sparklineData,
+      ),
+    );
+  }
+
+  Widget timelineTab({
+    required int index,
+    required Function onTap,
+    required List<TabItemModel> tabItems,
+  }) {
     Color selectedtextColor = Colors.white;
     Color cardBackColor = Colors.transparent;
 
@@ -395,7 +415,6 @@ class _CoinPageState extends State<CoinPage> {
         } else if (index == 4) {
           timePeriod = "5y";
         }
-        // print(timePeriod);
 
         getCoinData();
         setState(() {});
