@@ -184,24 +184,17 @@ class _CoinPageState extends State<CoinPage> {
     String logo = url.replaceAll(".svg", ".png");
     List<String?> sparkline = _cryptoCoinData!.data.coin.sparkline;
 
-    
-
-    
-
     List<double?> sparklineData = [];
     print(sparkline.length);
 
     for (int i = 0; i < sparkline.length; i++) {
-      
       if (sparkline[i] == null) {
         print("Null data");
         sparklineData.add(double.parse(sparkline[i - 1]!));
       } else {
         sparklineData.add(double.parse(sparkline[i]!));
       }
-      
     }
-   
 
     return Column(
       children: [
@@ -227,11 +220,11 @@ class _CoinPageState extends State<CoinPage> {
                 height: 110,
                 width: 110,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade700,
+                  color: Colors.grey.shade600,
                   shape: BoxShape.circle,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: CachedNetworkImage(
                     imageUrl: logo,
                     placeholder: (context, url) =>
@@ -328,7 +321,6 @@ class _CoinPageState extends State<CoinPage> {
           // color: Colors.grey,
           child: LineChartWidget(
             sparkData: sparklineData,
-            
           ),
         ),
         const SizedBox(height: 24),
@@ -449,11 +441,8 @@ class LineChartWidget extends StatelessWidget {
   ];
 
   final List<double?> sparkData;
-  
 
-  LineChartWidget(
-      {Key? key, required this.sparkData})
-      : super(key: key);
+  LineChartWidget({Key? key, required this.sparkData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

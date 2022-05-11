@@ -70,7 +70,28 @@ class _TrendingState extends State<Trending> {
       backgroundColor: bgDark,
       body: SafeArea(
         child: isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? Stack(
+                children: [
+                  Container(
+                    height: size.height,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      image: DecorationImage(
+                        image: ExactAssetImage(
+                          "assets/images/back.jpg",
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 25.0),
+                      child: Container(),
+                    ),
+                  ),
+                  Center(child: CircularProgressIndicator(color: Colors.white))
+                ],
+              )
             : Stack(
                 children: [
                   Container(
@@ -181,7 +202,9 @@ class _TrendingState extends State<Trending> {
                                                       imageUrl: logo,
                                                       placeholder: (context,
                                                               url) =>
-                                                          const CircularProgressIndicator(),
+                                                          const CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.white),
                                                       errorWidget: (context,
                                                               url, error) =>
                                                           const Icon(
@@ -384,7 +407,9 @@ class _TrendingState extends State<Trending> {
                                                         imageUrl: logo,
                                                         placeholder: (context,
                                                                 url) =>
-                                                            const CircularProgressIndicator(),
+                                                            const CircularProgressIndicator(
+                                                                color: Colors
+                                                                    .white),
                                                         errorWidget: (context,
                                                                 url, error) =>
                                                             const Icon(

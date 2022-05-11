@@ -403,35 +403,31 @@ class _HomePageState extends State<HomePage> {
                                                       Container(
                                                         height: 50,
                                                         width: 50,
+                                                        padding:
+                                                            EdgeInsets.all(8),
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: Colors.grey
+                                                          color: Colors.black
                                                               .withOpacity(0.2),
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(44),
                                                         ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(3),
-                                                          child:
-                                                              CachedNetworkImage(
-                                                            imageUrl: logo,
-                                                            placeholder: (context,
-                                                                    url) =>
-                                                                const CircularProgressIndicator(
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            errorWidget: (context,
-                                                                    url,
-                                                                    error) =>
-                                                                const Icon(
-                                                                    Icons.error,
-                                                                    color: Colors
-                                                                        .redAccent),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          fit: BoxFit.contain,
+                                                          imageUrl: logo,
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              const CircularProgressIndicator(
+                                                            color: Colors.white,
                                                           ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              const Icon(
+                                                                  Icons.error,
+                                                                  color: Colors
+                                                                      .redAccent),
                                                         ),
                                                       ),
                                                       const SizedBox(width: 12),
