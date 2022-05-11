@@ -111,6 +111,7 @@ class _CoinPageState extends State<CoinPage> {
             icon: Icon(Icons.arrow_back_ios)),
         title: Text(
           widget.coinName,
+          overflow: TextOverflow.fade,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

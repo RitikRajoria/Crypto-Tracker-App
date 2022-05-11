@@ -250,7 +250,9 @@ class _SearchState extends State<Search> {
                                                         fit: BoxFit.contain,
                                                         placeholder: (context,
                                                                 url) =>
-                                                            const CircularProgressIndicator(),
+                                                            const CircularProgressIndicator(
+                                                          color: Colors.white,
+                                                        ),
                                                         errorWidget: (context,
                                                                 url, error) =>
                                                             const Icon(
@@ -268,14 +270,21 @@ class _SearchState extends State<Search> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Text(
-                                                      snapshot
-                                                          .data![index].name,
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: textWhite,
+                                                    Container(
+                                                      width: (size.width) * 0.6,
+                                                      child: Text(
+                                                        snapshot
+                                                            .data![index].name,
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                        maxLines: 1,
+                                                        softWrap: false,
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: textWhite,
+                                                        ),
                                                       ),
                                                     ),
                                                     SizedBox(
