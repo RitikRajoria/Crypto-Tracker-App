@@ -1330,28 +1330,13 @@ class LineTitles {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 1,
-          getTitles: (value) {
-            switch (value.toInt()) {
-            }
-            return '';
-          },
           margin: 0,
         ),
         leftTitles: SideTitles(
-          showTitles: true,
-          getTitles: (value) {
-            switch (value.toInt()) {
-            }
-            return '';
-          },
+          showTitles: false,
         ),
         rightTitles: SideTitles(
-          showTitles: true,
-          getTitles: (value) {
-            switch (value.toInt()) {
-            }
-            return '';
-          },
+          showTitles: false,
         ),
         topTitles: SideTitles(showTitles: false),
       );
@@ -1388,13 +1373,12 @@ class LineChartWidget extends StatelessWidget {
         lineBarsData: [
           LineChartBarData(
             spots: [
-              FlSpot(-10, sparkData[0]!),
+              FlSpot(-5, sparkData[0]!),
               for (var i = 0; i < sparkData.length; i++)
                 FlSpot(i + 1, sparkData[i]!),
-              FlSpot(35, sparkData[26]!),
             ],
             colors: gradientColor,
-            barWidth: 2,
+            barWidth: 1,
             dotData: FlDotData(show: false),
             belowBarData: BarAreaData(
               show: true,

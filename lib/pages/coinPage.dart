@@ -540,7 +540,7 @@ class LineChartWidget extends StatelessWidget {
                 FlSpot(i + 1, sparkData[i]!),
             ],
             colors: gradientColor,
-            barWidth: 2,
+            barWidth: 1.5,
             dotData: FlDotData(show: false),
             belowBarData: BarAreaData(
               show: true,
