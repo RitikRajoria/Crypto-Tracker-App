@@ -310,7 +310,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
 
           Row(
             children: [
@@ -1031,7 +1031,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
 
           //recommendations tab
           Padding(
@@ -1078,14 +1077,14 @@ class _HomePageState extends State<HomePage> {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: 5,
                           itemBuilder: (context, index) {
-                            String price = double.parse(
-                                    cryptoData!.cryptoListing[index].price)
-                                .toStringAsFixed(3);
-                            String url =
-                                cryptoData!.cryptoListing[index].iconUrl;
+                            int i = ((index + 5) - 2) * 2;
+                            String price =
+                                double.parse(cryptoData!.cryptoListing[i].price)
+                                    .toStringAsFixed(3);
+                            String url = cryptoData!.cryptoListing[i].iconUrl;
                             String logo = url.replaceAll(".svg", ".png");
-                            String change =
-                                cryptoData!.cryptoListing[index].change;
+                            String change = cryptoData!.cryptoListing[i].change;
+
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -1093,9 +1092,9 @@ class _HomePageState extends State<HomePage> {
                                   MaterialPageRoute(
                                       builder: (context) => CoinPage(
                                             coinId: cryptoData
-                                                ?.cryptoListing[index].uuid,
+                                                ?.cryptoListing[i].uuid,
                                             coinName: cryptoData
-                                                ?.cryptoListing[index].name,
+                                                ?.cryptoListing[i].name,
                                           )),
                                 ).then((value) => onGoback());
                               },
@@ -1161,7 +1160,7 @@ class _HomePageState extends State<HomePage> {
                                                     width: (size.width) * 0.35,
                                                     child: Text(
                                                       cryptoData!
-                                                          .cryptoListing[index]
+                                                          .cryptoListing[i]
                                                           .name,
                                                       overflow:
                                                           TextOverflow.fade,
@@ -1176,8 +1175,7 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    cryptoData!
-                                                        .cryptoListing[index]
+                                                    cryptoData!.cryptoListing[i]
                                                         .symbol,
                                                     style: TextStyle(
                                                         fontSize: 16,

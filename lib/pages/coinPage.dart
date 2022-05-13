@@ -455,7 +455,7 @@ class _CoinPageState extends State<CoinPage> {
             timePeriod = "7d";
           }
         } else if (index == 3) {
-          if (difference < 365) {
+          if (difference < 366) {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             timePeriod = "30d";
           } else {
@@ -527,6 +527,7 @@ class LineChartWidget extends StatelessWidget {
 
     return LineChart(
       LineChartData(
+        
         minX: 0,
         minY: 0,
         maxX: 27,
