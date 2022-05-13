@@ -52,15 +52,18 @@ class _SearchState extends State<Search> {
       if (textFieldData == "") {
         print("Empty");
       } else {
-        searchList.add(
-          SearchModel(
-            uuid: _cryptoData!.cryptoSearchList[i].uuid,
-            symbol: _cryptoData!.cryptoSearchList[i].symbol,
-            name: _cryptoData!.cryptoSearchList[i].name,
-            iconUrl: _cryptoData!.cryptoSearchList[i].iconUrl,
-          ),
-        );
-        setState(() {});
+        if (_cryptoData!.cryptoSearchList[i].price != null &&
+            _cryptoData!.cryptoSearchList[i].sparkline[0] != null) {
+          searchList.add(
+            SearchModel(
+              uuid: _cryptoData!.cryptoSearchList[i].uuid,
+              symbol: _cryptoData!.cryptoSearchList[i].symbol,
+              name: _cryptoData!.cryptoSearchList[i].name,
+              iconUrl: _cryptoData!.cryptoSearchList[i].iconUrl,
+            ),
+          );
+          setState(() {});
+        }
       }
     }
 
@@ -188,6 +191,8 @@ class _SearchState extends State<Search> {
                               // String change = snapshot.data![index].change;
                               return GestureDetector(
                                 onTap: () {
+                                  print("UUId of coin chosed!  " +
+                                      snapshot.data![index].uuid);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

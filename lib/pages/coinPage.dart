@@ -241,16 +241,26 @@ class _CoinPageState extends State<CoinPage> {
     String logo = url.replaceAll(".svg", ".png");
     List<String?> sparkline = _cryptoCoinData!.data.coin.sparkline;
 
-    List<double?> sparklineData = [];
+    List<double> sparklineData = [];
+
+    final ErrorSnackBar = SnackBar(
+      content: Text('No Data Found for this Coin!'),
+    );
     print(sparkline.length);
 
-    for (int i = 0; i < sparkline.length; i++) {
-      if (sparkline[i] == null) {
-        print("Null data");
-        sparklineData.add(double.parse(sparkline[i - 1]!));
-      } else {
-        sparklineData.add(double.parse(sparkline[i]!));
+    if (sparkline[0] != null) {
+      var prevNotNullValue;
+      for (int i = 0; i < sparkline.length; i++) {
+        if (sparkline[i] != null) {
+          sparklineData.add(double.parse(sparkline[i]!));
+          prevNotNullValue = sparkline[i]!;
+        } else {
+          print("Null sparklinedata");
+          sparklineData.add(double.parse(prevNotNullValue));
+        }
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(ErrorSnackBar);
     }
 
     return Column(
