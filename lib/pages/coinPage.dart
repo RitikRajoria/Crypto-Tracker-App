@@ -7,9 +7,9 @@ import 'package:crypto_app_ui/models/crypto_response.dart';
 import 'package:crypto_app_ui/themes/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
 import '../database/fav_handler.dart';
 import '../models/favs.dart';
+import 'package:intl/intl.dart';
 
 class CoinPage extends StatefulWidget {
   final String coinId;
@@ -26,7 +26,6 @@ class _CoinPageState extends State<CoinPage> {
   FavDBHelper? dbHelper;
 
   late Future<List<FavsModel>> favsList;
-  int prevIndex = 0;
 
   bool favBtn = false;
 
@@ -60,7 +59,7 @@ class _CoinPageState extends State<CoinPage> {
     isLoading = true;
 
     final snackBar = SnackBar(
-      content: Text('No Data Found!'),
+      content: Text('Error with connecting to server!'),
     );
 
     try {
@@ -179,60 +178,62 @@ class _CoinPageState extends State<CoinPage> {
     );
   }
 
-  Positioned favButton(Size size) {
+  Widget favButton(Size size) {
     return Positioned(
-      bottom: 30,
+      bottom: 25,
       right: 12,
       left: 10,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          primary: Colors.white,
-          onPrimary: Colors.black,
-          shape: CircleBorder(),
-        ),
-        onPressed: () {
-          setState(() {
-            if (favBtn == false) {
-              dbHelper!.insert(FavsModel(uuid: widget.coinId)).then((value) {
-                print("Added to Favorites ${widget.coinName}");
-                setState(() {
-                  favsList = dbHelper!.getFavsList();
-                });
-              }).onError((error, stackTrace) {
-                print(error.toString());
-              });
-            } else if (favBtn == true) {
-              dbHelper!.delete(widget.coinId);
-              favsList = dbHelper!.getFavsList();
-              print("deleted ${widget.coinName}");
-            }
+      child: Center(
+        child: Container(
+          height: 57,
+          width: 57,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(40),
+          ),
+          child: FutureBuilder(
+            builder: ((context, snapshot) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (favBtn == false) {
+                      dbHelper!
+                          .insert(FavsModel(uuid: widget.coinId))
+                          .then((value) {
+                        print("Added to Favorites ${widget.coinName}");
+                        setState(() {
+                          favsList = dbHelper!.getFavsList();
+                        });
+                      }).onError((error, stackTrace) {
+                        print(error.toString());
+                      });
+                    } else if (favBtn == true) {
+                      dbHelper!.delete(widget.coinId);
+                      favsList = dbHelper!.getFavsList();
+                      print("deleted ${widget.coinName}");
+                    }
 
-            print("button pressed");
-            favBtn = !favBtn;
-            print(favBtn);
-          });
-        },
-        child: FutureBuilder(
-          builder: ((context, snapshot) {
-            return Container(
-              height: 50,
-              width: (size.width),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(favBtn ? Icons.star : Icons.star_border, size: 30),
-                ],
-              ),
-            );
-          }),
-          future: entryCheck(),
+                    print("button pressed");
+                    favBtn = !favBtn;
+                    print(favBtn);
+                  });
+                },
+                child: Container(
+                  child: Center(
+                      child: Icon(favBtn ? Icons.star : Icons.star_border,
+                          size: 30)),
+                ),
+              );
+            }),
+            future: entryCheck(),
+          ),
         ),
       ),
     );
   }
 
   Widget body(size) {
+    int difference = dateDifference();
     bool isTabSelected = false;
     String price =
         double.parse(_cryptoCoinData!.data.coin.price).toStringAsFixed(3);
@@ -261,6 +262,7 @@ class _CoinPageState extends State<CoinPage> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(ErrorSnackBar);
+      Navigator.pop(context);
     }
 
     return Column(
@@ -359,28 +361,7 @@ class _CoinPageState extends State<CoinPage> {
             color: Colors.grey.withOpacity(0.2),
             borderRadius: BorderRadius.circular(30),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: ((context, index) {
-                return timelineTab(
-                  onTap: () {
-                    tabItems[index].isSelected = true;
-
-                    for (int i = 0; i < tabItems.length; i++) {
-                      if (index != i) {
-                        tabItems[i].isSelected = false;
-                      }
-                    }
-                  },
-                  index: index,
-                  tabItems: tabItems,
-                );
-              }),
-              itemCount: 5,
-            ),
-          ),
+          child: TimeLineTabWidget(difference),
         ),
         const SizedBox(
           height: 60,
@@ -392,10 +373,45 @@ class _CoinPageState extends State<CoinPage> {
     );
   }
 
-  Container chart(size, List<double?> sparklineData) {
+  Widget TimeLineTabWidget(int difference) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemBuilder: ((context, index) {
+          return timelineTab(
+            onTap: () {
+              tabItems[index].isSelected = true;
+
+              for (int i = 0; i < tabItems.length; i++) {
+                if (index != i) {
+                  tabItems[i].isSelected = false;
+                }
+              }
+            },
+            index: index,
+            tabItems: tabItems,
+            difference: difference,
+          );
+        }),
+        itemCount: 5,
+      ),
+    );
+  }
+
+  int dateDifference() {
+    DateTime listedAt = new DateTime.fromMillisecondsSinceEpoch(
+        (_cryptoCoinData!.data.coin.listedAt * 1000));
+    var format = new DateFormat("yMd");
+    var dateString = format.format(listedAt);
+    DateTime currentDate = DateTime.now();
+    var dateString2 = format.format(currentDate);
+    final difference = currentDate.difference(listedAt).inDays;
+    return difference;
+  }
+
+  Widget chart(size, List<double?> sparklineData) {
     return Container(
-      height: 220,
-      width: size.width,
       // color: Colors.grey,
       child: LineChartWidget(
         sparkData: sparklineData,
@@ -407,26 +423,56 @@ class _CoinPageState extends State<CoinPage> {
     required int index,
     required Function onTap,
     required List<TabItemModel> tabItems,
+    required int difference,
   }) {
     Color selectedtextColor = Colors.white;
     Color cardBackColor = Colors.transparent;
+    final snackBar = SnackBar(
+      content: Text('No Data Found!'),
+      duration: Duration(seconds: 1),
+    );
 
     return InkWell(
       onTap: () {
         onTap();
 
+        print("$difference days.");
+
         if (index == 0) {
           timePeriod = "24h";
         } else if (index == 1) {
-          timePeriod = "7d";
+          if (difference < 7) {
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            timePeriod = "7d";
+          } else {
+            timePeriod = "24h";
+          }
         } else if (index == 2) {
-          timePeriod = "30d";
+          if (difference < 30) {
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            timePeriod = "30d";
+          } else {
+            timePeriod = "7d";
+          }
         } else if (index == 3) {
-          timePeriod = "1y";
+          if (difference < 365) {
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            timePeriod = "30d";
+          } else {
+            timePeriod = "1y";
+          }
         } else if (index == 4) {
-          timePeriod = "5y";
+          if (difference < 1827) {
+            if (difference < 1096) {
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              timePeriod = "1y";
+            } else {
+              timePeriod = "3y";
+            }
+          } else {
+            timePeriod = "5y";
+          }
         }
-
         getCoinData();
         setState(() {});
       },
@@ -489,10 +535,9 @@ class LineChartWidget extends StatelessWidget {
         lineBarsData: [
           LineChartBarData(
             spots: [
-              FlSpot(-10, sparkData[0]!),
+              FlSpot(-5, sparkData[0]!),
               for (var i = 0; i < sparkData.length; i++)
                 FlSpot(i + 1, sparkData[i]!),
-              FlSpot(35, sparkData[26]!),
             ],
             colors: gradientColor,
             barWidth: 2,
@@ -535,23 +580,13 @@ class LineTitles {
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-            }
-            return '';
-          },
-          margin: 8,
+          margin: 0,
         ),
         leftTitles: SideTitles(
-          showTitles: true,
-          getTitles: (value) {
-            switch (value.toInt()) {
-            }
-            return '';
-          },
+          showTitles: false,
         ),
         rightTitles: SideTitles(
-          showTitles: true,
+          showTitles: false,
           getTitles: (value) {
             switch (value.toInt()) {
             }
