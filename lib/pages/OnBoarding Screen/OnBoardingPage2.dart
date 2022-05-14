@@ -279,7 +279,7 @@ class _OnBoardingPage2State extends State<OnBoardingPage2> {
                                 );
                                 avatarError = false;
                                 textError = false;
-                                print("avatarError false textError false");
+                                print(" no avatarError : false  no textError : false");
                               } else {
                                 textError = true;
                                 avatarError = false;

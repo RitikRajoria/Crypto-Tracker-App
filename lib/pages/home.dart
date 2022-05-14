@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 //favs element
+  int favCounter = 0;
 
   Future<List<FavItemModelforHome>?> getFavItemList() async {
     CryptoPageResponse? _cryptoData = await CryptoRepository().getCryptoPage();
@@ -78,6 +79,10 @@ class _HomePageState extends State<HomePage> {
         : favsList.length >= 1
             ? 1
             : 0;
+    if (favCounter < 1) {
+      this.setState(() {});
+    }
+    favCounter++;
 
     return favsList;
   }
@@ -1077,12 +1082,13 @@ class _HomePageState extends State<HomePage> {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: 5,
                           itemBuilder: (context, index) {
-                            int i = ((index + 5) - 2) * 2;
+                            int i = ((index + 5) - 2) * 3;
                             String price =
                                 double.parse(cryptoData!.cryptoListing[i].price)
                                     .toStringAsFixed(3);
                             String url = cryptoData!.cryptoListing[i].iconUrl;
                             String logo = url.replaceAll(".svg", ".png");
+
                             String change = cryptoData!.cryptoListing[i].change;
 
                             return GestureDetector(
@@ -1132,8 +1138,8 @@ class _HomePageState extends State<HomePage> {
                                                       BorderRadius.circular(24),
                                                 ),
                                                 child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
+                                                  padding: const EdgeInsets.all(
+                                                      11.0),
                                                   child: CachedNetworkImage(
                                                     imageUrl: logo,
                                                     placeholder: (context,

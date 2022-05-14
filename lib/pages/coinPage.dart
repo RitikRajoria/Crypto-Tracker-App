@@ -41,6 +41,7 @@ class _CoinPageState extends State<CoinPage> {
 
   Future<List<FavsModel>> loadData() async {
     favsList = dbHelper!.getFavsList();
+    
     return favsList;
   }
 
@@ -198,7 +199,7 @@ class _CoinPageState extends State<CoinPage> {
                   setState(() {
                     if (favBtn == false) {
                       dbHelper!
-                          .insert(FavsModel(uuid: widget.coinId))
+                          .insert(FavsModel(uuid: widget.coinId,))
                           .then((value) {
                         print("Added to Favorites ${widget.coinName}");
                         setState(() {
@@ -236,9 +237,9 @@ class _CoinPageState extends State<CoinPage> {
     int difference = dateDifference();
     bool isTabSelected = false;
     String price =
-        double.parse(_cryptoCoinData!.data.coin.price).toStringAsFixed(3);
-    String change = _cryptoCoinData!.data.coin.change;
-    String url = _cryptoCoinData!.data.coin.iconUrl;
+        double.parse(_cryptoCoinData!.data.coin.price!).toStringAsFixed(3);
+    String change = _cryptoCoinData!.data.coin.change!;
+    String url = _cryptoCoinData!.data.coin.iconUrl!;
     String logo = url.replaceAll(".svg", ".png");
     List<String?> sparkline = _cryptoCoinData!.data.coin.sparkline;
 
@@ -270,37 +271,25 @@ class _CoinPageState extends State<CoinPage> {
         const SizedBox(height: 20),
         Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 115,
-                width: 103,
-                decoration: BoxDecoration(
+            Container(
+              height: 110,
+              width: 110,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                border: Border.all(
+                  width: 0.6,
                   color: Colors.white.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(60),
                 ),
+                shape: BoxShape.circle,
               ),
-            ),
-            Positioned(
-              bottom: 10.5,
-              right: 1,
-              left: 1,
-              child: Container(
-                height: 110,
-                width: 110,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade600,
-                  shape: BoxShape.circle,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: CachedNetworkImage(
-                    imageUrl: logo,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error, color: Colors.redAccent),
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: CachedNetworkImage(
+                  imageUrl: logo,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.error, color: Colors.redAccent),
                 ),
               ),
             )
@@ -319,7 +308,7 @@ class _CoinPageState extends State<CoinPage> {
             ),
             const SizedBox(width: 12),
             Text(
-              _cryptoCoinData!.data.coin.symbol,
+              _cryptoCoinData!.data.coin.symbol!,
               style: TextStyle(
                   color: Colors.grey.shade600,
                   fontWeight: FontWeight.w500,
@@ -401,7 +390,7 @@ class _CoinPageState extends State<CoinPage> {
 
   int dateDifference() {
     DateTime listedAt = new DateTime.fromMillisecondsSinceEpoch(
-        (_cryptoCoinData!.data.coin.listedAt * 1000));
+        (_cryptoCoinData!.data.coin.listedAt! * 1000));
     var format = new DateFormat("yMd");
     var dateString = format.format(listedAt);
     DateTime currentDate = DateTime.now();
@@ -527,7 +516,6 @@ class LineChartWidget extends StatelessWidget {
 
     return LineChart(
       LineChartData(
-        
         minX: 0,
         minY: 0,
         maxX: 27,

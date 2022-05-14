@@ -51,39 +51,39 @@ class Data {
 class Coin {
   String uuid;
 
-  String symbol;
+  String? symbol;
 
-  String name;
+  String? name;
 
-  String description;
+  String? description;
 
-  String iconUrl;
+  String? iconUrl;
 
-  String s24hVolume;
+  String? s24hVolume;
 
-  String marketCap;
+  String? marketCap;
 
-  String price;
+  String? price;
 
-  String btcPrice;
+  String? btcPrice;
 
-  int priceAt;
+  int? priceAt;
 
-  String change;
+  String? change;
 
-  int rank;
+  int? rank;
 
-  int numberOfMarkets;
+  int? numberOfMarkets;
 
-  int numberOfExchanges;
+  int? numberOfExchanges;
 
-  int listedAt;
+  int? listedAt;
 
   List<String?> sparkline;
 
   AllTimeHigh allTimeHigh;
 
-  String coinrankingUrl;
+  String? coinrankingUrl;
 
   Coin(
       {required this.uuid,

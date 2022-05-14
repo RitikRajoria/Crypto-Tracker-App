@@ -65,7 +65,7 @@ class _FavoritesState extends State<Favorites> {
   bool isLoading = false;
 
   bool editOn = false;
-  bool viewType = true; //default value is true, true means grid view
+  bool viewType = false; //default value is true, true means grid view
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -829,5 +829,3 @@ class _FavoritesState extends State<Favorites> {
     setState(() {});
   }
 }
-
-
