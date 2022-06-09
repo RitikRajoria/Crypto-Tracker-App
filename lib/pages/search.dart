@@ -39,6 +39,7 @@ class _SearchState extends State<Search> {
     isLoading = true;
     print("$searchText");
     _cryptoData = await CryptoRepository().getSearchedCoin(searchText);
+    print(" search liost length ${_cryptoData!.cryptoSearchList.length}");
     isLoading = false;
     setState(() {});
   }

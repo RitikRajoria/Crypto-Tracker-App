@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_app_ui/database/fav_handler.dart';
+import 'package:crypto_app_ui/models/coin_detail_view.dart';
 import 'package:crypto_app_ui/pages/home.dart';
 import 'package:crypto_app_ui/pages/trendings.dart';
 import 'package:crypto_app_ui/pages/coinPage.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/crypto_page_response.dart';
 import '../models/crypto_response.dart';
+import '../models/crypto_search_response.dart';
 import '../models/favs.dart';
 import '../themes/colors.dart';
 
@@ -42,8 +44,12 @@ class _FavoritesState extends State<Favorites> {
 
   Future<List<FavItemModel>?> getFavItemList() async {
     CryptoPageResponse? _cryptoData = await CryptoRepository().getCryptoPage();
+
     List<FavsModel> listFromDB = await dbHelper!.getFavsList();
+
     favsList = [];
+
+    CoinResponse? _cryptoCoinData;
 
     for (int i = 0; i < _cryptoData.cryptoListing.length; i++) {
       listFromDB.forEach((element) {
@@ -59,6 +65,7 @@ class _FavoritesState extends State<Favorites> {
         }
       });
     }
+
     return favsList;
   }
 

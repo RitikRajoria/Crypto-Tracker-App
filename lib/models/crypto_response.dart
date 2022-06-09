@@ -29,8 +29,9 @@ class CryptoRepository {
   }
 
   Future<CryptoSearchPageResponse> getSearchedCoin(String searchText) async {
-    
-    final query = {'search': '$searchText'};
+    int limit = 100;
+
+    final query = {'search': '$searchText', 'limit': '$limit'};
     final uri = Uri.http(baseUrl, '/v2/coins', query);
 
     final response = await http.get(uri, headers: {

@@ -41,7 +41,7 @@ class _CoinPageState extends State<CoinPage> {
 
   Future<List<FavsModel>> loadData() async {
     favsList = dbHelper!.getFavsList();
-    
+
     return favsList;
   }
 
@@ -199,7 +199,8 @@ class _CoinPageState extends State<CoinPage> {
                   setState(() {
                     if (favBtn == false) {
                       dbHelper!
-                          .insert(FavsModel(uuid: widget.coinId,))
+                          .insert(FavsModel(
+                              uuid: widget.coinId, name: widget.coinName))
                           .then((value) {
                         print("Added to Favorites ${widget.coinName}");
                         setState(() {
@@ -524,9 +525,10 @@ class LineChartWidget extends StatelessWidget {
         lineBarsData: [
           LineChartBarData(
             spots: [
-              FlSpot(-5, sparkData[0]!),
+              FlSpot(-1, sparkData[0]!),
               for (var i = 0; i < sparkData.length; i++)
                 FlSpot(i + 1, sparkData[i]!),
+              FlSpot(27, sparkData[24]!),
             ],
             colors: gradientColor,
             barWidth: 1.5,
@@ -562,7 +564,7 @@ class LineTitles {
   static getTitleData() => FlTitlesData(
         show: true,
         bottomTitles: SideTitles(
-          showTitles: true,
+          showTitles: false,
           reservedSize: 1,
           getTextStyles: (context, value) => TextStyle(
             color: Colors.grey,
@@ -576,11 +578,6 @@ class LineTitles {
         ),
         rightTitles: SideTitles(
           showTitles: false,
-          getTitles: (value) {
-            switch (value.toInt()) {
-            }
-            return '';
-          },
         ),
         topTitles: SideTitles(showTitles: false),
       );

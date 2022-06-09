@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         : favsList.length >= 1
             ? 1
             : 0;
-    if (favCounter < 1) {
+    if (favCounter < 2) {
       this.setState(() {});
     }
     favCounter++;
@@ -1377,9 +1377,10 @@ class LineChartWidget extends StatelessWidget {
         lineBarsData: [
           LineChartBarData(
             spots: [
-              FlSpot(-5, sparkData[0]!),
+              FlSpot(-1, sparkData[0]!),
               for (var i = 0; i < sparkData.length; i++)
                 FlSpot(i + 1, sparkData[i]!),
+              FlSpot(27, sparkData[24]!),
             ],
             colors: gradientColor,
             barWidth: 1,

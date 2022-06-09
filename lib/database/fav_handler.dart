@@ -24,7 +24,7 @@ class FavDBHelper {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        """CREATE TABLE favs (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid TEXT NOT NULL UNIQUE)""");
+        """CREATE TABLE favs (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid TEXT NOT NULL UNIQUE, name TEXT NOT NULL)""");
   }
 
   Future<FavsModel> insert(FavsModel favsModel) async {

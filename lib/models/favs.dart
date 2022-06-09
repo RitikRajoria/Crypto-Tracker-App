@@ -1,15 +1,17 @@
 class FavsModel {
   final int? id;
   final String uuid;
+  final String name;
 
-  FavsModel({this.id, required this.uuid});
+  FavsModel({this.id, required this.uuid, required this.name});
 
   FavsModel.fromMap(Map<String, dynamic> res)
       : id = res['id'],
-        uuid = res['uuid'];
+        uuid = res['uuid'],
+        name = res['name'];
 
   Map<String, Object?> toMap() {
-    return {'id': id, 'uuid': uuid};
+    return {'id': id, 'uuid': uuid, 'name': name};
   }
 }
 
