@@ -518,14 +518,8 @@ class LineChartWidget extends StatelessWidget {
 
     return LineChart(
       LineChartData(
-//
-
         lineTouchData: LineTouchData(
             enabled: true,
-            touchCallback:
-                (FlTouchEvent event, LineTouchResponse? touchResponse) {
-              // TODO : Utilize touch event here to perform any operation
-            },
             touchTooltipData: LineTouchTooltipData(
                 tooltipBgColor: Colors.white.withOpacity(0.5),
                 tooltipRoundedRadius: 20.0,
@@ -563,8 +557,6 @@ class LineChartWidget extends StatelessWidget {
               ).toList();
             },
             getTouchLineEnd: (_, __) => double.infinity),
-
-//
         minX: 0,
         minY: 0,
         maxX: 27,
