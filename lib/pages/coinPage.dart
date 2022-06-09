@@ -559,7 +559,7 @@ class LineChartWidget extends StatelessWidget {
             getTouchLineEnd: (_, __) => double.infinity),
         minX: 0,
         minY: 0,
-        maxX: 27,
+        maxX: sparkData.length.toDouble(),
         maxY: _maxYvalue(sparkData),
         titlesData: LineTitles.getTitleData(),
         lineBarsData: [
@@ -568,7 +568,6 @@ class LineChartWidget extends StatelessWidget {
               FlSpot(-1, sparkData[0]!),
               for (var i = 0; i < sparkData.length; i++)
                 FlSpot(i + 1, sparkData[i]!),
-              FlSpot(27, sparkData[24]!),
             ],
             colors: gradientColor,
             barWidth: 1.5,
