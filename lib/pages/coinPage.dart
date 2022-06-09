@@ -505,6 +505,7 @@ class LineChartWidget extends StatelessWidget {
     Colors.grey,
     Colors.grey.withOpacity(0.4),
   ];
+  final _dashArray = [4, 2];
 
   final List<double?> sparkData;
 
@@ -517,6 +518,53 @@ class LineChartWidget extends StatelessWidget {
 
     return LineChart(
       LineChartData(
+//
+
+        lineTouchData: LineTouchData(
+            enabled: true,
+            touchCallback:
+                (FlTouchEvent event, LineTouchResponse? touchResponse) {
+              // TODO : Utilize touch event here to perform any operation
+            },
+            touchTooltipData: LineTouchTooltipData(
+                tooltipBgColor: Colors.white.withOpacity(0.5),
+                tooltipRoundedRadius: 20.0,
+                showOnTopOfTheChartBoxArea: true,
+                fitInsideHorizontally: true,
+                tooltipMargin: 0,
+                getTooltipItems: (sparkSpots) {
+                  return sparkSpots.map(
+                    (LineBarSpot touchedSpot) {
+                      const textStyle = TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      );
+
+                      return LineTooltipItem(
+                          sparkData[touchedSpot.spotIndex]!.toStringAsFixed(3),
+                          textStyle);
+                    },
+                  ).toList();
+                }),
+            getTouchedSpotIndicator:
+                (LineChartBarData barData, List<int> indicators) {
+              return indicators.map(
+                (int index) {
+                  final line = FlLine(
+                      color: Colors.white,
+                      strokeWidth: 1,
+                      dashArray: _dashArray);
+                  return TouchedSpotIndicatorData(
+                    line,
+                    FlDotData(show: false),
+                  );
+                },
+              ).toList();
+            },
+            getTouchLineEnd: (_, __) => double.infinity),
+
+//
         minX: 0,
         minY: 0,
         maxX: 27,
