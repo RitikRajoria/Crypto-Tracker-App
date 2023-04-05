@@ -57,7 +57,7 @@ trending coins according to current market situations
 - Encoding image as String and vice versa.
 - Using Rest APIs
 
-## About the OpenStreetMap weather API
+## About the Coin Ranking API
 
 The app shows data from the following endpoints:
 
